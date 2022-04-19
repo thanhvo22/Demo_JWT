@@ -40,7 +40,7 @@ const postLogin = async (req: Request, res: Response) => {
       { user: userName._id },
       process.env.ACCESS_TOKEN_SECRET as string,
       {
-        expiresIn: "5m",
+        expiresIn: "1m",
       }
     );
     const refreshToken = jwt.sign(

@@ -3,7 +3,7 @@ import authCookieCTL from "../controllers/auth.cookie";
 import { cookieMiddleWare } from "../middleware/cookieSession.middleware";
 const router: Express = express();
 
-router.get('/', authCookieCTL.getLogin);
+router.get('/login', authCookieCTL.getLogin);
 router.get("/user", cookieMiddleWare, authCookieCTL.getLogin);
 
 // register

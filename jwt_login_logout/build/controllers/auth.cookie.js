@@ -43,7 +43,8 @@ var dotenv = require("dotenv");
 var morgan_1 = require("morgan");
 dotenv.config();
 var getLogin = function (req, res) {
-    res.render("src/views/auth/login.pug");
+    // res.render("src/views/auth/login.pug");
+    res.render("auth/login.pug");
 };
 var postLogin = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, user, pass, userName, passValid, accessToken, error_1;
@@ -85,7 +86,6 @@ var postLogin = function (req, res) { return __awaiter(void 0, void 0, void 0, f
                 //   })
                 res
                     .cookie("accessToken", accessToken, {
-                    maxAge: 30 * 20,
                     httpOnly: true
                 })
                     .status(200)

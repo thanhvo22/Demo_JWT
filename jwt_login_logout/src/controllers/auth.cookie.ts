@@ -8,7 +8,7 @@ dotenv.config();
 
 const getLogin = (req: Request, res: Response) => {
   // res.render("src/views/auth/login.pug");
-  res.render("auth/login")
+  res.render("auth/login.pug")
 };
 
 const postLogin = async (req: Request, res: Response) => {
@@ -51,7 +51,8 @@ const postLogin = async (req: Request, res: Response) => {
     //   })
     res
       .cookie("accessToken", accessToken, {
-        httpOnly:true
+        httpOnly:true,
+        // signed: true
       })
       .status(200)
       .json(accessToken);

@@ -15,10 +15,7 @@ const accountSchema: Schema = new Schema(
 
     image: {
       type: String,
-    },
-    refreshToken: {
-      type: String,
-    },
+    }
   },
   { timestamps: true }
 );

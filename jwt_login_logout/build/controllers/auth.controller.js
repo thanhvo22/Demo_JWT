@@ -77,7 +77,7 @@ var postLogin = function (req, res) { return __awaiter(void 0, void 0, void 0, f
                             message: "mat khau or tai khoan k dung"
                         })];
                 accessToken = jsonwebtoken_1["default"].sign({ user: userName._id }, process.env.ACCESS_TOKEN_SECRET, {
-                    expiresIn: "5m"
+                    expiresIn: "1m"
                 });
                 refreshToken = jsonwebtoken_1["default"].sign({ user: userName._id }, process.env.REFRESH_TOKEN_SECRET, {
                     expiresIn: "1h"

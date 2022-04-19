@@ -12,9 +12,6 @@ var accountSchema = new mongoose_1.Schema({
     },
     image: {
         type: String
-    },
-    refreshToken: {
-        type: String
     }
 }, { timestamps: true });
 exports["default"] = (0, mongoose_1.model)("Account", accountSchema);
