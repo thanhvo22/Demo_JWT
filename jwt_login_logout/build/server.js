@@ -12,13 +12,13 @@ var body_parser_1 = require("body-parser");
 var auth_cookie_1 = require("./routes/auth.cookie");
 var cookie_parser_1 = require("cookie-parser");
 var app = (0, express_1["default"])();
+app.set("view engine", "pug");
+app.set("views", "./src/views");
 app.use(express_1["default"].json());
 app.use((0, cors_1["default"])());
 app.use((0, cookie_parser_1["default"])());
 app.use(body_parser_1["default"].json()); // for parsing application/json
 app.use(body_parser_1["default"].urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
-app.set("view engine", "pug");
-app.set("views", "./src/views");
 if (!process.env.PORT) {
     process.exit(1);
 }
@@ -34,7 +34,7 @@ mongoose_1["default"]
     throw error;
 });
 app.get("/", function (req, res) {
-    res.render("auth/login");
+    res.render("auth/login.pug");
 });
 app.use("/api/v1/auth", auth_route_1["default"]);
 app.use("/api/v2/auth", auth_cookie_1["default"]);

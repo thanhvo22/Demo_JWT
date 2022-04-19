@@ -40,11 +40,10 @@ var argon2_1 = require("argon2");
 var jsonwebtoken_1 = require("jsonwebtoken");
 var account_model_1 = require("../models/account.model");
 var dotenv = require("dotenv");
+var morgan_1 = require("morgan");
 dotenv.config();
 var getLogin = function (req, res) {
-    console.log("hello");
-    res.json("hello broooo!");
-    res.render("/auth/login");
+    res.render("src/views/auth/login.pug");
 };
 var postLogin = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, user, pass, userName, passValid, accessToken, error_1;
@@ -79,15 +78,23 @@ var postLogin = function (req, res) { return __awaiter(void 0, void 0, void 0, f
                 accessToken = jsonwebtoken_1["default"].sign({ user: userName._id }, process.env.ACCESS_TOKEN_SECRET, {
                     expiresIn: "5m"
                 });
-                return [2 /*return*/, res
-                        .cookie("access_token", accessToken, {
-                        httpOnly: true
-                    })
-                        .status(200)
-                        .json(accessToken)];
+                // res
+                //   .cookie("cookie", accessToken, {
+                //     httpOnly: true,
+                //     signed: true,
+                //   })
+                res
+                    .cookie("accessToken", accessToken, {
+                    maxAge: 30 * 20,
+                    httpOnly: true
+                })
+                    .status(200)
+                    .json(accessToken);
+                return [3 /*break*/, 5];
             case 4:
                 error_1 = _b.sent();
                 console.log(error_1);
+                console.log(morgan_1.token);
                 res.status(500).json({
                     success: false,
                     message: "error"

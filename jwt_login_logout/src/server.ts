@@ -13,15 +13,15 @@ import cookieParser from "cookie-parser";
 
 const app = express();
 
+app.set("views", "./src/views");
+app.set("view engine", "pug");
+
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
-
-app.set("view engine", "pug");
-app.set("views", "./src/views");
 
 if (!process.env.PORT) {
   process.exit(1);
@@ -41,7 +41,7 @@ mongoose
   });
 
 app.get("/", (req, res) => {
-  res.render("auth/login");
+  res.render("auth/login.pug");
 });
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v2/auth", authCookieRouter);

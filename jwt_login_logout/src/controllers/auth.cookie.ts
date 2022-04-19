@@ -3,12 +3,12 @@ import argon2 from "argon2";
 import jwt, { Secret } from "jsonwebtoken";
 import accountModel from "../models/account.model";
 import * as dotenv from "dotenv";
+import { token } from "morgan";
 dotenv.config();
 
 const getLogin = (req: Request, res: Response) => {
-  console.log("hello");
-  res.json("hello broooo!");
-  res.render("/auth/login");
+  // res.render("src/views/auth/login.pug");
+  res.render("auth/login")
 };
 
 const postLogin = async (req: Request, res: Response) => {
@@ -44,14 +44,21 @@ const postLogin = async (req: Request, res: Response) => {
       }
     );
 
-    return res
-      .cookie("access_token", accessToken, {
-        httpOnly: true,
+    // res
+    //   .cookie("cookie", accessToken, {
+    //     httpOnly: true,
+    //     signed: true,
+    //   })
+    res
+      .cookie("accessToken", accessToken, {
+        httpOnly:true
       })
       .status(200)
       .json(accessToken);
+    // res.redirect("/users");
   } catch (error) {
     console.log(error);
+    console.log(token);
     res.status(500).json({
       success: false,
       message: "error",
