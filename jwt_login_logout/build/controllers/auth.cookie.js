@@ -154,35 +154,9 @@ var postRegister = function (req, res) { return __awaiter(void 0, void 0, void 0
         }
     });
 }); };
-// const postToken = (req: any, res: Response) => {
-//     const refreshToken = req.body.refreshToken;
-//     if (!refreshToken) return res.sendStatus(401);
-//     const name = accountModel.findOne({user});
-//     if (!name) return res.sendStatus(403);
-//     try {
-//       jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET as Secret);
-//       const accessToken = jwt.sign(
-//         { userId: name._id },
-//         process.env.ACCESS_TOKEN_SECRET as Secret,
-//         {
-//           expiresIn: "1m",
-//         }
-//       );
-//       updateRefreshToken(user.username, tokens.refreshToken);
-//       res.json(tokens);
-//     } catch (error) {
-//       console.log(error);
-//       res.sendStatus(403);
-//     }
-//   }
 var deleteLogin = function (req, res) {
-    //   let user = accountModel.find((user: any) => user.id === req.userId);
-    //   console.log(req.users);
-    //   res.sendStatus(204);
-    return res
-        .clearCookie("access_token")
-        .status(200)
-        .json({ message: "Successfully logged out" });
+    res.clearCookie("cookie_id");
+    res.render("index");
 };
 exports["default"] = {
     getLogin: getLogin,
