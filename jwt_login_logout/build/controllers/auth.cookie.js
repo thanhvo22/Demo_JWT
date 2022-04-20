@@ -46,8 +46,11 @@ var getLogin = function (req, res) {
     // res.render("src/views/auth/login.pug");
     res.render("auth/login.pug");
 };
+var getUser = function (req, res) {
+    res.render("users/index");
+};
 var postLogin = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, user, pass, userName, passValid, accessToken, error_1;
+    var _a, user, pass, userName, passValid, error_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -76,20 +79,13 @@ var postLogin = function (req, res) { return __awaiter(void 0, void 0, void 0, f
                             success: false,
                             message: "mat khau or tai khoan k dung"
                         })];
-                accessToken = jsonwebtoken_1["default"].sign({ user: userName._id }, process.env.ACCESS_TOKEN_SECRET, {
-                    expiresIn: "5m"
-                });
-                // res
-                //   .cookie("cookie", accessToken, {
-                //     httpOnly: true,
-                //     signed: true,
-                //   })
                 res
-                    .cookie("accessToken", accessToken, {
-                    httpOnly: true
-                })
-                    .status(200)
-                    .json(accessToken);
+                    .cookie("cookie_id", userName.id, {
+                    signed: true
+                });
+                // .status(200)
+                // .json(accessToken);
+                res.redirect("/api/v2/auth/user");
                 return [3 /*break*/, 5];
             case 4:
                 error_1 = _b.sent();
@@ -192,5 +188,6 @@ exports["default"] = {
     getLogin: getLogin,
     postLogin: postLogin,
     postRegister: postRegister,
-    deleteLogin: deleteLogin
+    deleteLogin: deleteLogin,
+    getUser: getUser
 };

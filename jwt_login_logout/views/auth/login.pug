@@ -7,7 +7,7 @@ block content
     each error in errors
       .alert.alert-danger= error
 
-  form(method="POST", action ="/login")
+  form(method="POST", action ="/api/v2/auth/login")
     .form-group
       label(for="user") user
       input#user.form-control(name="user", type="text", value=values ? values.user : "")

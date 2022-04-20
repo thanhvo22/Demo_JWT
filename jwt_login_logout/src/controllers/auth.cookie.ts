@@ -7,9 +7,13 @@ import { token } from "morgan";
 dotenv.config();
 
 const getLogin = (req: Request, res: Response) => {
+  
   // res.render("src/views/auth/login.pug");
-  res.render("auth/login.pug")
+  res.render("auth/login.pug");
 };
+const getUser = (req:Request, res:Response) => {
+  res.render("users/index")
+}
 
 const postLogin = async (req: Request, res: Response) => {
   const { user, pass } = req.body;
@@ -20,7 +24,7 @@ const postLogin = async (req: Request, res: Response) => {
     });
 
   try {
-    const userName = await accountModel.findOne({ user });
+     const userName = await accountModel.findOne({ user });
 
     if (!userName)
       return res.status(400).json({
@@ -34,29 +38,13 @@ const postLogin = async (req: Request, res: Response) => {
         success: false,
         message: "mat khau or tai khoan k dung",
       });
-
-    //all good -> return token
-    const accessToken = jwt.sign(
-      { user: userName._id },
-      process.env.ACCESS_TOKEN_SECRET as string,
-      {
-        expiresIn: "5m",
-      }
-    );
-
-    // res
-    //   .cookie("cookie", accessToken, {
-    //     httpOnly: true,
-    //     signed: true,
-    //   })
     res
-      .cookie("accessToken", accessToken, {
-        httpOnly:true,
-        // signed: true
+      .cookie("cookie_id", userName.id, {
+        signed: true
       })
-      .status(200)
-      .json(accessToken);
-    // res.redirect("/users");
+      // .status(200)
+      // .json(accessToken);
+    res.redirect("/api/v2/auth/user");
   } catch (error) {
     console.log(error);
     console.log(token);
@@ -65,6 +53,7 @@ const postLogin = async (req: Request, res: Response) => {
       message: "error",
     });
   }
+  // res.redirect('users/index')
 };
 
 const postRegister = async (req: Request, res: Response) => {
@@ -144,10 +133,9 @@ const deleteLogin = (req: any, res: Response) => {
   //   console.log(req.users);
 
   //   res.sendStatus(204);
-  return res
-    .clearCookie("access_token")
-    .status(200)
-    .json({ message: "Successfully logged out" });
+  res
+    .clearCookie("cookie_id")
+  res.render("index");
 };
 
 export default {
@@ -155,4 +143,5 @@ export default {
   postLogin,
   postRegister,
   deleteLogin,
+  getUser
 };
