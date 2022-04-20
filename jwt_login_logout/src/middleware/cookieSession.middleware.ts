@@ -7,7 +7,8 @@ export const cookieMiddleWare = function (
 ) {
   if (req.signedCookies.cookie_id) {
     next();
+    return;
   }
   // return res.json("cookie k ton tai, vui long dang nhap lai ");
-  return res.render("auth/login")
+  return res.redirect("/api/v2/auth/login")
 };
