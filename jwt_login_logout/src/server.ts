@@ -5,9 +5,9 @@ dotenv.config();
 // import cors from "cors";
 // import { errorHandler } from "./middleware/error";
 // import { notFoundHandler } from "./middleware/not-found";
-import authRouter from "./routes/auth.route";
+import authRouter from "./api/routers/auth.route";
 import authCookieRouter from "./routes/auth.cookie";
-import userRouter from "./routes/user.routes";
+import userRouter from "./api/routers/user.routes";
 import userPugRouter from './routes/user.pug.route';
 
 const path = require("path");
@@ -51,11 +51,11 @@ mongoose
   });
 
 // console.log(authCookieRouter.path());
-app.use("/api/v2/auth", authCookieRouter); 
-app.use("/api/v2/user", userPugRouter);
+app.use("/auth", authCookieRouter); 
+app.use("/user", userPugRouter);
 
-app.use("/api/v1/auth", authRouter);
+
 
 //v1 call post man
 app.use("/api/v1/user", userRouter);
-
+app.use("/api/v1/auth", authRouter);
