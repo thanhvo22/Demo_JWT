@@ -5,6 +5,7 @@ import { cookieMiddleWare } from '../middleware/cookieSession.middleware';
 
 router.get('/',cookieMiddleWare , userPugController.getUser);
 
+router.get('/create', userPugController.getCreateUser);
 router.get('/all-user', userPugController.getUser);
 
 router.post('/create', userPugController.postUser);
