@@ -52,9 +52,10 @@ mongoose
 
 // console.log(authCookieRouter.path());
 app.use("/api/v2/auth", authCookieRouter); 
+app.use("/api/v2/user", userPugRouter);
+
 app.use("/api/v1/auth", authRouter);
 
 //v1 call post man
 app.use("/api/v1/user", userRouter);
 
-app.use("api/v2/user", userPugRouter);

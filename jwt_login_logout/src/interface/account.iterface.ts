@@ -1,7 +1,8 @@
 import { Document } from "mongoose";
 
 export interface IAccount extends Document {
-  name: string;
+  user: string;
+  name?: string;
   pass: string;
   image?: string;
 }

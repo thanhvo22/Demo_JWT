@@ -6,7 +6,11 @@ dotenv.config();
 
 export = {
   getUser: async (req: Request, res: Response) => {
-    res.render("users/index");
+    const user = await accountModel.find();
+    res.json({
+      user,
+    });
+    // res.render("users/index");
   },
 
   postUser: async (req: Request, res: Response) => {

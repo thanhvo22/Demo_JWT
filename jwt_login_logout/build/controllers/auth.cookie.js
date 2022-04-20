@@ -85,7 +85,7 @@ var postLogin = function (req, res) { return __awaiter(void 0, void 0, void 0, f
                 });
                 // .status(200)
                 // .json(accessToken);
-                res.redirect("/api/v2/auth/user");
+                res.render("users/index");
                 return [3 /*break*/, 5];
             case 4:
                 error_1 = _b.sent();
@@ -156,7 +156,7 @@ var postRegister = function (req, res) { return __awaiter(void 0, void 0, void 0
 }); };
 var deleteLogin = function (req, res) {
     res.clearCookie("cookie_id");
-    res.render("index");
+    res.render("auth/login");
 };
 exports["default"] = {
     getLogin: getLogin,

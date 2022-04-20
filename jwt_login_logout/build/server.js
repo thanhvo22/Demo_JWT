@@ -10,6 +10,7 @@ dotenv.config();
 var auth_route_1 = require("./routes/auth.route");
 var auth_cookie_1 = require("./routes/auth.cookie");
 var user_routes_1 = require("./routes/user.routes");
+var user_pug_route_1 = require("./routes/user.pug.route");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
@@ -42,8 +43,7 @@ mongoose_1["default"]
 });
 // console.log(authCookieRouter.path());
 app.use("/api/v2/auth", auth_cookie_1["default"]);
+app.use("/api/v2/user", user_pug_route_1["default"]);
 app.use("/api/v1/auth", auth_route_1["default"]);
-app.use("/api/v2/user", user_routes_1["default"]);
-// app.get("/", (req, res) => {
-//   res.render("auth/login.pug"); 
-// });
+//v1 call post man
+app.use("/api/v1/user", user_routes_1["default"]);

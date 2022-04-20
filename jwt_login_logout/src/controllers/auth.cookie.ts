@@ -44,7 +44,7 @@ const postLogin = async (req: Request, res: Response) => {
       })
       // .status(200)
       // .json(accessToken);
-    res.redirect("/api/v2/auth/user");
+    res.render("users/index");
   } catch (error) {
     console.log(error);
     console.log(token);
@@ -104,7 +104,7 @@ const postRegister = async (req: Request, res: Response) => {
 };
 const deleteLogin = (req: any, res: Response) => {
   res.clearCookie("cookie_id")
-  res.render("index");
+  res.render("auth/login");
 };
 
 export default {

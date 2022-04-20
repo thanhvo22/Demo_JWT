@@ -9,11 +9,11 @@ block content
 
   form(method="POST", action ="/api/v2/auth/login")
     .form-group
-      label(for="user") user
+      label(for="user") USER
       input#user.form-control(name="user", type="text", value=values ? values.user : "")
 
     .form-group
-      label(for="pass") Phone
+      label(for="pass") PASS
       input#pass.form-control(name="pass", type="password", value=values ? values.pass : "")
 
     button.btn.btn-primary Login

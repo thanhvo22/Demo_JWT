@@ -47,8 +47,8 @@ module.exports = {
                 case 0: return [4 /*yield*/, account_model_1["default"].find()];
                 case 1:
                     user = _a.sent();
-                    res.json({
-                        user: user
+                    res.render("users/index", {
+                        users: user
                     });
                     return [2 /*return*/];
             }
