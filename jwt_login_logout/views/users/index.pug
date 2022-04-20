@@ -16,10 +16,13 @@ block content
       th Name
       th user
       th Actions
-
+      
+    
     each user in users
       tr
         td=user.name
+        td=user.user 
+        td=user.image
         
         td
           a.btn.btn-light(href='/users/' + user.id) View
