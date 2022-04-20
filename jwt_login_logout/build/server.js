@@ -2,19 +2,20 @@
 exports.__esModule = true;
 var express_1 = require("express");
 var dotenv = require("dotenv");
+var mongoose_1 = require("mongoose");
+dotenv.config();
+// import cors from "cors";
 // import { errorHandler } from "./middleware/error";
 // import { notFoundHandler } from "./middleware/not-found";
 var auth_route_1 = require("./routes/auth.route");
-var mongoose_1 = require("mongoose");
-dotenv.config();
-var cors_1 = require("cors");
 var auth_cookie_1 = require("./routes/auth.cookie");
+var user_routes_1 = require("./routes/user.routes");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
 var app = (0, express_1["default"])();
 app.use(express_1["default"].json());
-app.use((0, cors_1["default"])());
+// app.use(cors());
 // app.use(cookieParser());
 app.use(cookieParser(process.env.SESSION_SECRET)); //using signed \\ signedCookies
 // khong khac gi cookie nhung co them secret, co the ktra cookie. 
@@ -42,6 +43,7 @@ mongoose_1["default"]
 // console.log(authCookieRouter.path());
 app.use("/api/v2/auth", auth_cookie_1["default"]);
 app.use("/api/v1/auth", auth_route_1["default"]);
+app.use("/api/v2/user", user_routes_1["default"]);
 // app.get("/", (req, res) => {
 //   res.render("auth/login.pug"); 
 // });

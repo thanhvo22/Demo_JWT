@@ -13,9 +13,13 @@ const accountSchema: Schema = new Schema(
       required: true,
     },
 
+    name: {
+      type: String,
+    },
+
     image: {
       type: String,
-    }
+    },
   },
   { timestamps: true }
 );

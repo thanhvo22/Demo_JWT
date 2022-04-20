@@ -1,13 +1,15 @@
 import express from "express";
 import * as dotenv from "dotenv";
+import mongoose from "mongoose";
+dotenv.config();
+// import cors from "cors";
 // import { errorHandler } from "./middleware/error";
 // import { notFoundHandler } from "./middleware/not-found";
 import authRouter from "./routes/auth.route";
-import mongoose from "mongoose";
-dotenv.config();
-import cors from "cors";
-
 import authCookieRouter from "./routes/auth.cookie";
+import userRouter from "./routes/user.routes";
+import userPugRouter from './routes/user.pug.route';
+
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
@@ -17,7 +19,7 @@ const app = express();
 
 
 app.use(express.json());
-app.use(cors());
+// app.use(cors());
 // app.use(cookieParser());
 app.use(cookieParser(process.env.SESSION_SECRET));  //using signed \\ signedCookies
 // khong khac gi cookie nhung co them secret, co the ktra cookie. 
@@ -52,6 +54,7 @@ mongoose
 app.use("/api/v2/auth", authCookieRouter); 
 app.use("/api/v1/auth", authRouter);
 
-// app.get("/", (req, res) => {
-//   res.render("auth/login.pug"); 
-// });
+//v1 call post man
+app.use("/api/v1/user", userRouter);
+
+app.use("api/v2/user", userPugRouter);
