@@ -7,13 +7,12 @@ import { token } from "morgan";
 dotenv.config();
 
 const getLogin = (req: Request, res: Response) => {
-  
   // res.render("src/views/auth/login.pug");
   res.render("auth/login.pug");
 };
-const getUser = (req:Request, res:Response) => {
-  res.render("users/index")
-}
+const getUser = (req: Request, res: Response) => {
+  res.render("users/index");
+};
 
 const postLogin = async (req: Request, res: Response) => {
   const { user, pass } = req.body;
@@ -24,7 +23,7 @@ const postLogin = async (req: Request, res: Response) => {
     });
 
   try {
-     const userName = await accountModel.findOne({ user });
+    const userName = await accountModel.findOne({ user });
 
     if (!userName)
       return res.status(400).json({
@@ -38,13 +37,12 @@ const postLogin = async (req: Request, res: Response) => {
         success: false,
         message: "mat khau or tai khoan k dung",
       });
-    res
-      .cookie("cookie_id", userName.id, {
-        signed: true
-      })
-      // .status(200)
-      // .json(accessToken);
-    res.render("users/index");
+    res.cookie("cookie_id", userName.id, {
+      signed: true,
+    });
+    // .status(200)
+    // .json(accessToken);
+    res.redirect("/user");
   } catch (error) {
     console.log(error);
     console.log(token);
@@ -53,7 +51,7 @@ const postLogin = async (req: Request, res: Response) => {
       message: "error",
     });
   }
-  // res.redirect('users/index')
+  res.redirect("auth/login");
 };
 
 const postRegister = async (req: Request, res: Response) => {
@@ -103,7 +101,7 @@ const postRegister = async (req: Request, res: Response) => {
   }
 };
 const deleteLogin = (req: any, res: Response) => {
-  res.clearCookie("cookie_id")
+  res.clearCookie("cookie_id");
   res.render("auth/login");
 };
 
@@ -112,5 +110,5 @@ export default {
   postLogin,
   postRegister,
   deleteLogin,
-  getUser
+  getUser,
 };

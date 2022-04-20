@@ -8,10 +8,13 @@ export = {
   getUser: async (req: Request, res: Response) => {
     const users = await accountModel.find();
     console.log(users);
-    
+
     return  res.render("users/index", {
       users: users
     });
+  },
+  getCreateUser: (req:Request, res:Response) => {
+    res.render('users/create')
   },
 
   postUser: async (req: Request, res: Response) => {
