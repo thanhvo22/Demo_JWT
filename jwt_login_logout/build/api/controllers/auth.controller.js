@@ -36,9 +36,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var argon2_1 = require("argon2");
-var jsonwebtoken_1 = require("jsonwebtoken");
-var account_model_1 = require("../models/account.model");
+var account_model_1 = require("../../models/account.model");
+var jwt = require("jsonwebtoken");
+var argon2 = require("argon2");
 var dotenv = require("dotenv");
 dotenv.config();
 var getLogin = function (req, res) {
@@ -68,7 +68,7 @@ var postLogin = function (req, res) { return __awaiter(void 0, void 0, void 0, f
                             success: false,
                             message: "tai khoan khong co ton tai"
                         })];
-                return [4 /*yield*/, argon2_1["default"].verify(userName.pass, pass)];
+                return [4 /*yield*/, argon2.verify(userName.pass, pass)];
             case 3:
                 passValid = _b.sent();
                 if (!passValid)
@@ -76,10 +76,10 @@ var postLogin = function (req, res) { return __awaiter(void 0, void 0, void 0, f
                             success: false,
                             message: "mat khau or tai khoan k dung"
                         })];
-                accessToken = jsonwebtoken_1["default"].sign({ user: userName._id }, process.env.ACCESS_TOKEN_SECRET, {
+                accessToken = jwt.sign({ user: userName._id }, process.env.ACCESS_TOKEN_SECRET, {
                     expiresIn: "1m"
                 });
-                refreshToken = jsonwebtoken_1["default"].sign({ user: userName._id }, process.env.REFRESH_TOKEN_SECRET, {
+                refreshToken = jwt.sign({ user: userName._id }, process.env.REFRESH_TOKEN_SECRET, {
                     expiresIn: "1h"
                 });
                 res.json({
@@ -124,7 +124,7 @@ var postRegister = function (req, res) { return __awaiter(void 0, void 0, void 0
                             success: false,
                             message: "user da ton tai"
                         })];
-                return [4 /*yield*/, argon2_1["default"].hash(pass)];
+                return [4 /*yield*/, argon2.hash(pass)];
             case 3:
                 hashedPass = _b.sent();
                 newUser = new account_model_1["default"]({
@@ -134,10 +134,10 @@ var postRegister = function (req, res) { return __awaiter(void 0, void 0, void 0
                 return [4 /*yield*/, newUser.save()];
             case 4:
                 _b.sent();
-                accessToken = jsonwebtoken_1["default"].sign({ userId: newUser._id }, process.env.ACCESS_TOKEN_SECRET, {
+                accessToken = jwt.sign({ userId: newUser._id }, process.env.ACCESS_TOKEN_SECRET, {
                     expiresIn: "1m"
                 });
-                refreshToken = jsonwebtoken_1["default"].sign({ userId: newUser._id }, process.env.REFRESH_TOKEN_SECRET, {
+                refreshToken = jwt.sign({ userId: newUser._id }, process.env.REFRESH_TOKEN_SECRET, {
                     expiresIn: "50m"
                 });
                 res.json({
@@ -170,11 +170,11 @@ var postToken = function (req, res) { return __awaiter(void 0, void 0, void 0, f
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 4, , 5]);
-                return [4 /*yield*/, jsonwebtoken_1["default"].verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)];
+                return [4 /*yield*/, jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)];
             case 2:
                 user = _a.sent();
                 newUser = user;
-                return [4 /*yield*/, jsonwebtoken_1["default"].sign({ newUser: newUser }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1m" })];
+                return [4 /*yield*/, jwt.sign({ newUser: newUser }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1m" })];
             case 3:
                 accessToken = _a.sent();
                 res.json({ accessToken: accessToken, refreshToken: refreshToken });

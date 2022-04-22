@@ -4,8 +4,9 @@ exports.cookieMiddleWare = void 0;
 var cookieMiddleWare = function (req, res, next) {
     if (req.signedCookies.cookie_id) {
         next();
+        return;
     }
     // return res.json("cookie k ton tai, vui long dang nhap lai ");
-    return res.render("auth/login");
+    return res.redirect("auth/login");
 };
 exports.cookieMiddleWare = cookieMiddleWare;

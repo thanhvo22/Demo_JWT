@@ -35,25 +35,30 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+exports.__esModule = true;
+exports.userPugController = void 0;
 var account_model_1 = require("../models/account.model");
-var argon2 = require("argon2");
 var dotenv = require("dotenv");
 dotenv.config();
-module.exports = {
+var argon2 = require("argon2");
+exports.userPugController = {
     getUser: function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-        var user;
+        var users;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, account_model_1["default"].find()];
                 case 1:
-                    user = _a.sent();
-                    res.render("users/index", {
-                        users: user
-                    });
-                    return [2 /*return*/];
+                    users = _a.sent();
+                    console.log(users);
+                    return [2 /*return*/, res.render("users/index", {
+                            users: users
+                        })];
             }
         });
     }); },
+    getCreateUser: function (req, res) {
+        res.render("users/create");
+    },
     postUser: function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
         var _a, user, name_1, pass, findUser, hashedPass, newUser, error_1;
         return __generator(this, function (_b) {

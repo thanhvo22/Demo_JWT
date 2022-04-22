@@ -36,11 +36,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var argon2_1 = require("argon2");
-var jsonwebtoken_1 = require("jsonwebtoken");
 var account_model_1 = require("../models/account.model");
 var dotenv = require("dotenv");
-var morgan_1 = require("morgan");
+var jwt = require("jsonwebtoken");
+var argon2 = require("argon2");
 dotenv.config();
 var getLogin = function (req, res) {
     // res.render("src/views/auth/login.pug");
@@ -71,7 +70,7 @@ var postLogin = function (req, res) { return __awaiter(void 0, void 0, void 0, f
                             success: false,
                             message: "tai khoan khong co ton tai"
                         })];
-                return [4 /*yield*/, argon2_1["default"].verify(userName.pass, pass)];
+                return [4 /*yield*/, argon2.verify(userName.pass, pass)];
             case 3:
                 passValid = _b.sent();
                 if (!passValid)
@@ -79,24 +78,24 @@ var postLogin = function (req, res) { return __awaiter(void 0, void 0, void 0, f
                             success: false,
                             message: "mat khau or tai khoan k dung"
                         })];
-                res
-                    .cookie("cookie_id", userName.id, {
+                res.cookie("cookie_id", userName.id, {
                     signed: true
                 });
                 // .status(200)
                 // .json(accessToken);
-                res.render("users/index");
+                res.redirect("/user/index");
                 return [3 /*break*/, 5];
             case 4:
                 error_1 = _b.sent();
                 console.log(error_1);
-                console.log(morgan_1.token);
                 res.status(500).json({
                     success: false,
                     message: "error"
                 });
                 return [3 /*break*/, 5];
-            case 5: return [2 /*return*/];
+            case 5:
+                res.redirect("auth/login");
+                return [2 /*return*/];
         }
     });
 }); };
@@ -123,7 +122,7 @@ var postRegister = function (req, res) { return __awaiter(void 0, void 0, void 0
                             success: false,
                             message: "user da ton tai"
                         })];
-                return [4 /*yield*/, argon2_1["default"].hash(pass)];
+                return [4 /*yield*/, argon2.hash(pass)];
             case 3:
                 hashedPass = _b.sent();
                 newUser = new account_model_1["default"]({
@@ -133,7 +132,7 @@ var postRegister = function (req, res) { return __awaiter(void 0, void 0, void 0
                 return [4 /*yield*/, newUser.save()];
             case 4:
                 _b.sent();
-                accessToken = jsonwebtoken_1["default"].sign({ userId: newUser._id }, process.env.ACCESS_TOKEN_SECRET, {
+                accessToken = jwt.sign({ userId: newUser._id }, process.env.ACCESS_TOKEN_SECRET, {
                     expiresIn: "1m"
                 });
                 res.json({
