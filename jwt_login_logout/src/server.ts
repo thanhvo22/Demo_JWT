@@ -1,6 +1,4 @@
-import express from "express";
 import * as dotenv from "dotenv";
-import mongoose from "mongoose";
 dotenv.config();
 // import cors from "cors";
 // import { errorHandler } from "./middleware/error";
@@ -8,21 +6,20 @@ dotenv.config();
 import authRouter from "./api/routers/auth.route";
 import authCookieRouter from "./routes/auth.cookie";
 import userRouter from "./api/routers/user.routes";
-import userPugRouter from './routes/user.pug.route';
+import userPugRouter from "./routes/user.pug.route";
 
+const express = require("express");
+const mongoose = require("mongoose");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
-
 const app = express();
-
-
 
 app.use(express.json());
 // app.use(cors());
 // app.use(cookieParser());
-app.use(cookieParser(process.env.SESSION_SECRET));  //using signed \\ signedCookies
-// khong khac gi cookie nhung co them secret, co the ktra cookie. 
+app.use(cookieParser(process.env.SESSION_SECRET)); //using signed \\ signedCookies
+// khong khac gi cookie nhung co them secret, co the ktra cookie.
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
@@ -46,15 +43,13 @@ mongoose
       console.log(`Server running on http://localhost:${PORT}`)
     )
   )
-  .catch((error) => {
-    throw error;
+  .catch((err: Error) => {
+    throw err;
   });
 
 // console.log(authCookieRouter.path());
-app.use("/auth", authCookieRouter); 
+app.use("/auth", authCookieRouter);
 app.use("/user", userPugRouter);
-
-
 
 //v1 call post man
 app.use("/api/v1/user", userRouter);
