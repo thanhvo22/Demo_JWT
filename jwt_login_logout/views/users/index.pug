@@ -20,9 +20,9 @@ block content
     
     each user in users
       tr
-        td=user.name
-        td=user.user 
-        td=user.image
+        td=user.images
+        td=user.name 
+        td=user.user
         
         td
           a.btn.btn-light(href='/users/' + user.id) View
