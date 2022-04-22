@@ -1,9 +1,10 @@
-import express, { Express } from "express";
+const express = require("express");
 import authCookieCTL from "../controllers/auth.cookie";
 import { cookieMiddleWare } from "../middleware/cookieSession.middleware";
 const router = express();
 
-router.get('/login', (req, res) => {res.render('auth/login')});
+router.get("/", cookieMiddleWare, authCookieCTL.getLogin);
+router.get("/login", authCookieCTL.getLogin);
 router.get("/user", cookieMiddleWare, authCookieCTL.getUser);
 
 // register
