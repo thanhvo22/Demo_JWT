@@ -1,32 +1,34 @@
-import express, { Request, Response } from "express";
+import * as express from "express";
+import { Request, Response } from "express";
 import accountModel from "../models/account.model";
-const argon2 = require("argon2");
 import * as dotenv from "dotenv";
 dotenv.config();
+const argon2 = require("argon2");
 
-export = {
+export const userPugController = {
   getUser: async (req: Request, res: Response) => {
     const users = await accountModel.find();
     console.log(users);
 
-    return  res.render("users/index", {
-      users: users
+    return res.render("users/index", {
+      users: users,
     });
   },
-  getCreateUser: (req:Request, res:Response) => {
-    res.render('users/create')
+  getCreateUser: (req: Request, res: Response) => {
+    res.render("users/create");
   },
 
   postUser: async (req: Request, res: Response) => {
     try {
       const { user, name, pass } = req.body;
-      const findUser = await accountModel.findOne({user});
-      if(findUser) return res.status(401).json({message: "tai khoan da ton tai!"})
+      const findUser = await accountModel.findOne({ user });
+      if (findUser)
+        return res.status(401).json({ message: "tai khoan da ton tai!" });
       const hashedPass = await argon2.hash(pass);
       const newUser = new accountModel({
         user,
         name,
-        pass:hashedPass,
+        pass: hashedPass,
       });
       newUser.save();
       res.status(201).json({
@@ -45,14 +47,13 @@ export = {
   putUser: async (req: Request, res: Response) => {
     try {
       const _id = req.params.id;
-      const {user, name, pass} = req.body
+      const { user, name, pass } = req.body;
       const hashedPass = await argon2.hash(pass);
-      const newUser = await accountModel.findByIdAndUpdate(_id, 
-        {
-            user,
-            name,
-            pass:hashedPass
-        });
+      const newUser = await accountModel.findByIdAndUpdate(_id, {
+        user,
+        name,
+        pass: hashedPass,
+      });
       res.status(201).json({
         message: "edit user successfully",
         user: newUser,
@@ -67,12 +68,12 @@ export = {
   deleteUser: async (req: Request, res: Response) => {
     try {
       const _id = req.params.id;
-      const newUser = await accountModel.findByIdAndRemove({_id});
+      const newUser = await accountModel.findByIdAndRemove({ _id });
       res.status(201).json({
-          message: "delete user successfully"
-      })
+        message: "delete user successfully",
+      });
     } catch (error) {
-        res.json(error);
+      res.json(error);
     }
   },
 };

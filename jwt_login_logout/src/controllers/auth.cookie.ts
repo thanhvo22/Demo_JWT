@@ -1,9 +1,10 @@
-import express, { Request, Response } from "express";
-import argon2 from "argon2";
-import jwt, { Secret } from "jsonwebtoken";
+import * as express from 'express';
+import { Request, Response } from "express";
 import accountModel from "../models/account.model";
 import * as dotenv from "dotenv";
-import { token } from "morgan";
+
+const jwt = require("jsonwebtoken");
+const argon2 = require("argon2");
 dotenv.config();
 
 const getLogin = (req: Request, res: Response) => {
@@ -42,10 +43,10 @@ const postLogin = async (req: Request, res: Response) => {
     });
     // .status(200)
     // .json(accessToken);
-    res.redirect("/user");
+    res.redirect("/user/index");
   } catch (error) {
     console.log(error);
-    console.log(token);
+   
     res.status(500).json({
       success: false,
       message: "error",
@@ -81,7 +82,7 @@ const postRegister = async (req: Request, res: Response) => {
     await newUser.save();
     const accessToken = jwt.sign(
       { userId: newUser._id },
-      process.env.ACCESS_TOKEN_SECRET as Secret,
+      process.env.ACCESS_TOKEN_SECRET,
       {
         expiresIn: "1m",
       }
