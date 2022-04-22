@@ -1,15 +1,16 @@
-import express, { Express } from "express";
-const router: Express = express();
-import userController from "../controllers/user.controller";
-import { cookieMiddleWare } from '../../middleware/cookieSession.middleware';
+import { userController } from "../controllers/user.controller";
+import { cookieMiddleWare } from "../../middleware/cookieSession.middleware";
 
-router.get('/',cookieMiddleWare , userController.getUser);
+const express = require("express");
+const router = express();
 
-router.get('/all-user', userController.getUser);
+router.get("/", cookieMiddleWare, userController.getUser);
 
-router.post('/create', userController.postUser);
+router.get("/all-user", userController.getUser);
 
-router.put('/edit/:id', userController.putUser);
+router.post("/create", userController.postUser);
 
-router.delete('/delete/:id', userController.deleteUser);
-export default router
+router.put("/edit/:id", userController.putUser);
+
+router.delete("/delete/:id", userController.deleteUser);
+export default router;

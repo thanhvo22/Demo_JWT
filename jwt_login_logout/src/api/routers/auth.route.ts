@@ -1,7 +1,7 @@
-import express, { Express } from "express";
 import authController from "../../api/controllers/auth.controller";
 import { verifyToken } from "../../middleware/auth.middleware";
-const router: Express = express();
+const express = require("express");
+const router = express();
 
 //login
 router.get("/login", verifyToken, authController.getLogin);

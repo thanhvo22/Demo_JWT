@@ -1,7 +1,9 @@
-import express, { Request, Response } from "express";
-import argon2 from "argon2";
-import jwt, { Secret } from "jsonwebtoken";
+import * as express from "express";
+import { Request, Response } from "express";
 import accountModel from "../../models/account.model";
+
+const jwt = require("jsonwebtoken");
+const argon2 = require("argon2");
 import * as dotenv from "dotenv";
 dotenv.config();
 
@@ -38,14 +40,14 @@ const postLogin = async (req: Request, res: Response) => {
     //all good -> return token
     const accessToken = jwt.sign(
       { user: userName._id },
-      process.env.ACCESS_TOKEN_SECRET as string,
+      process.env.ACCESS_TOKEN_SECRET,
       {
         expiresIn: "1m",
       }
     );
     const refreshToken = jwt.sign(
       { user: userName._id },
-      process.env.REFRESH_TOKEN_SECRET as string,
+      process.env.REFRESH_TOKEN_SECRET,
       {
         expiresIn: "1h",
       }
@@ -93,14 +95,14 @@ const postRegister = async (req: Request, res: Response) => {
     await newUser.save();
     const accessToken = jwt.sign(
       { userId: newUser._id },
-      process.env.ACCESS_TOKEN_SECRET as Secret,
+      process.env.ACCESS_TOKEN_SECRET,
       {
         expiresIn: "1m",
       }
     );
     const refreshToken = jwt.sign(
       { userId: newUser._id },
-      process.env.REFRESH_TOKEN_SECRET as Secret,
+      process.env.REFRESH_TOKEN_SECRET,
       {
         expiresIn: "50m",
       }
@@ -127,13 +129,13 @@ const postToken = async (req: any, res: Response) => {
   try {
     const user = await jwt.verify(
       refreshToken,
-      process.env.REFRESH_TOKEN_SECRET as Secret
+      process.env.REFRESH_TOKEN_SECRET
     );
     // user = { email: 'jame@gmail.com', iat: 1633586290, exp: 1633586350 }
     const newUser = user;
     const accessToken = await jwt.sign(
       { newUser },
-      process.env.ACCESS_TOKEN_SECRET as Secret,
+      process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: "1m" }
     );
     res.json({ accessToken, refreshToken });
