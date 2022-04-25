@@ -15,6 +15,9 @@ var accountSchema = new mongoose_1.Schema({
     },
     image: {
         type: String
+    },
+    cloudinary_id: {
+        type: String
     }
 }, { timestamps: true });
 exports["default"] = (0, mongoose_1.model)("Account", accountSchema);

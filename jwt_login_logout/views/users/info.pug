@@ -1,0 +1,22 @@
+extends ../layouts/common
+
+block content
+  h1
+    span.mr-3 Profile
+    a.btn.btn-primary(href="/user/create") New
+
+  table.table
+    tr
+      th Avatar
+      th Name
+      th user
+      th Actions
+        
+    tr
+      td
+        img(src=user.image, width="50")
+      td=user.name 
+      td=user.user
+      
+      td
+        a.btn.btn-light(href='/user/info/edit') Edit

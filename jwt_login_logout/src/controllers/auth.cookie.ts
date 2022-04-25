@@ -1,4 +1,4 @@
-import * as express from 'express';
+import * as express from "express";
 import { Request, Response } from "express";
 import accountModel from "../models/account.model";
 import * as dotenv from "dotenv";
@@ -41,18 +41,16 @@ const postLogin = async (req: Request, res: Response) => {
     res.cookie("cookie_id", userName.id, {
       signed: true,
     });
-    // .status(200)
-    // .json(accessToken);
-    res.redirect("/user/index");
+    res.redirect("/user")
   } catch (error) {
     console.log(error);
-   
+
     res.status(500).json({
       success: false,
       message: "error",
     });
   }
-  res.redirect("auth/login");
+  
 };
 
 const postRegister = async (req: Request, res: Response) => {
@@ -103,7 +101,7 @@ const postRegister = async (req: Request, res: Response) => {
 };
 const deleteLogin = (req: any, res: Response) => {
   res.clearCookie("cookie_id");
-  res.render("auth/login");
+  res.redirect("/auth/login");
 };
 
 export default {

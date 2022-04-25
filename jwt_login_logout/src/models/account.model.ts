@@ -20,6 +20,9 @@ const accountSchema: Schema = new Schema(
     image: {
       type: String,
     },
+    cloudinary_id: {
+      type: String,
+    }
   },
   { timestamps: true }
 );

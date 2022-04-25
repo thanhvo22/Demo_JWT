@@ -5,6 +5,7 @@ export const cookieMiddleWare = function (
   res: Response,
   next: NextFunction
 ) {
+  console.log("id_user:",req.signedCookies.cookie_id)
   if (req.signedCookies.cookie_id) {
     next();
     return;

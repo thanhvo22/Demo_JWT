@@ -13,6 +13,8 @@ const mongoose = require("mongoose");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
+const multer = require("multer");
+const rateLimit = require("express-rate-limit");
 const app = express();
 
 app.use(express.json());
@@ -27,7 +29,7 @@ console.log(__dirname);
 app.set("views", path.join(__dirname, "../views"));
 
 app.set("view engine", "pug");
-console.log("PATH: ", path.join(__dirname, "../views"));
+console.log("PATH: ", path.join(__dirname, "public"));
 app.use(express.static(path.join(__dirname, "public")));
 
 if (!process.env.PORT) {
@@ -47,10 +49,15 @@ mongoose
     throw err;
   });
 
+const apiLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minutes
+  max: 2,
+  message: "Too many connection",
+});
 // console.log(authCookieRouter.path());
 app.use("/auth", authCookieRouter);
 app.use("/user", userPugRouter);
 
 //v1 call post man
-app.use("/api/v1/user", userRouter);
+app.use("/api/v1/user",apiLimiter ,userRouter);
 app.use("/api/v1/auth", authRouter);

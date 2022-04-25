@@ -47,7 +47,7 @@ var getLogin = function (req, res) {
     res.send("hello bro");
 };
 var postLogin = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, user, pass, userName, passValid, accessToken, refreshToken, error_1;
+    var _a, user, pass, userName, passValid, error_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -76,17 +76,27 @@ var postLogin = function (req, res) { return __awaiter(void 0, void 0, void 0, f
                             success: false,
                             message: "mat khau or tai khoan k dung"
                         })];
-                accessToken = jwt.sign({ user: userName._id }, process.env.ACCESS_TOKEN_SECRET, {
-                    expiresIn: "1m"
-                });
-                refreshToken = jwt.sign({ user: userName._id }, process.env.REFRESH_TOKEN_SECRET, {
-                    expiresIn: "1h"
+                //all good -> return token
+                // const accessToken = jwt.sign(
+                //   { user: userName._id },
+                //   process.env.ACCESS_TOKEN_SECRET,
+                //   {
+                //     expiresIn: "1m",
+                //   }
+                // );
+                // const refreshToken = jwt.sign(
+                //   { user: userName._id },
+                //   process.env.REFRESH_TOKEN_SECRET,
+                //   {
+                //     expiresIn: "1h",
+                //   }
+                // );
+                res.cookie("cookie_id", userName.id, {
+                    signed: true
                 });
                 res.json({
                     success: true,
-                    message: " login successfully ",
-                    accessToken: accessToken,
-                    refreshToken: refreshToken
+                    message: " login successfully "
                 });
                 return [3 /*break*/, 5];
             case 4:
@@ -189,8 +199,10 @@ var postToken = function (req, res) { return __awaiter(void 0, void 0, void 0, f
     });
 }); };
 var deleteLogin = function (req, res) {
-    localStorage.setItem("access_token", JSON.stringify([]));
-    res.sendStatus(204);
+    res.clearCookie("cookie_id");
+    res.json({
+        message: "logout successfully"
+    });
 };
 exports["default"] = {
     getLogin: getLogin,

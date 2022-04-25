@@ -81,9 +81,7 @@ var postLogin = function (req, res) { return __awaiter(void 0, void 0, void 0, f
                 res.cookie("cookie_id", userName.id, {
                     signed: true
                 });
-                // .status(200)
-                // .json(accessToken);
-                res.redirect("/user/index");
+                res.redirect("/user");
                 return [3 /*break*/, 5];
             case 4:
                 error_1 = _b.sent();
@@ -93,9 +91,7 @@ var postLogin = function (req, res) { return __awaiter(void 0, void 0, void 0, f
                     message: "error"
                 });
                 return [3 /*break*/, 5];
-            case 5:
-                res.redirect("auth/login");
-                return [2 /*return*/];
+            case 5: return [2 /*return*/];
         }
     });
 }); };
@@ -155,7 +151,7 @@ var postRegister = function (req, res) { return __awaiter(void 0, void 0, void 0
 }); };
 var deleteLogin = function (req, res) {
     res.clearCookie("cookie_id");
-    res.render("auth/login");
+    res.redirect("/auth/login");
 };
 exports["default"] = {
     getLogin: getLogin,

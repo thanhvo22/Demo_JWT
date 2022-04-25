@@ -3,7 +3,7 @@ extends ../layouts/common
 block content
   h1
     span.mr-3 Users
-    a.btn.btn-primary(href="/users/create") New
+    a.btn.btn-primary(href="/user/create") New
 
   .d-flex.align-items-center
     form.ml-auto(action="/users/search" method="GET" class="d-flex")
@@ -20,7 +20,8 @@ block content
     
     each user in users
       tr
-        td=user.images
+        td
+          img(src=user.image, width="50")
         td=user.name 
         td=user.user
         

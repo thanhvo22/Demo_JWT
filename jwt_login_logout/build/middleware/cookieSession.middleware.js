@@ -2,6 +2,7 @@
 exports.__esModule = true;
 exports.cookieMiddleWare = void 0;
 var cookieMiddleWare = function (req, res, next) {
+    console.log("id_user:", req.signedCookies.cookie_id);
     if (req.signedCookies.cookie_id) {
         next();
         return;

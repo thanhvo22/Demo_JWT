@@ -38,26 +38,26 @@ const postLogin = async (req: Request, res: Response) => {
       });
 
     //all good -> return token
-    const accessToken = jwt.sign(
-      { user: userName._id },
-      process.env.ACCESS_TOKEN_SECRET,
-      {
-        expiresIn: "1m",
-      }
-    );
-    const refreshToken = jwt.sign(
-      { user: userName._id },
-      process.env.REFRESH_TOKEN_SECRET,
-      {
-        expiresIn: "1h",
-      }
-    );
-
+    // const accessToken = jwt.sign(
+    //   { user: userName._id },
+    //   process.env.ACCESS_TOKEN_SECRET,
+    //   {
+    //     expiresIn: "1m",
+    //   }
+    // );
+    // const refreshToken = jwt.sign(
+    //   { user: userName._id },
+    //   process.env.REFRESH_TOKEN_SECRET,
+    //   {
+    //     expiresIn: "1h",
+    //   }
+    // );
+    res.cookie("cookie_id", userName.id, {
+      signed: true,
+    });
     res.json({
       success: true,
       message: " login successfully ",
-      accessToken,
-      refreshToken,
     });
   } catch (error) {
     console.log(error);
@@ -146,8 +146,10 @@ const postToken = async (req: any, res: Response) => {
 };
 
 const deleteLogin = (req: any, res: Response) => {
-  localStorage.setItem("access_token", JSON.stringify([]));
-  res.sendStatus(204);
+  res.clearCookie("cookie_id");
+  res.json({
+    message: "logout successfully"
+  })
 };
 
 export default {
