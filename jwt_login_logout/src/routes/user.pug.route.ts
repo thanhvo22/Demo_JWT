@@ -19,7 +19,7 @@ router.post("/create", upload.single("image"), userPugController.postUser);
 
 router.get("/info/edit", userPugController.getEdit);
 
-router.put("/info/edit", upload.single("image"), userPugController.putUser);
+router.post("/info/edit", upload.single("image"), userPugController.putUser);
 
 router.delete("/delete/:id", userPugController.deleteUser);
 

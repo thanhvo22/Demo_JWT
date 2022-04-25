@@ -66,9 +66,10 @@ export const userPugController = {
       
       const id = req.signedCookies.cookie_id;
       console.log("put user: ", id);
-      let user_cloud: any = await accountModel.findById(id);
-
-      await cloudinary.uploader.destroy(user_cloud.cloudinary_id);
+      let user_cloud = await accountModel.findById(id);
+      if(user_cloud){
+        await cloudinary.uploader.destroy(user_cloud.cloudinary_id);
+      }
       let path = req.file;
       let avatar;
       if (path) {
@@ -79,8 +80,8 @@ export const userPugController = {
       const newUser = await accountModel.findByIdAndUpdate(id, {
         name,
         pass: hashedPass,
-        image: avatar.secure_url || user_cloud.cloudinary_id,
-        cloudinary_id: avatar.public_id || user_cloud.cloudinary_id,
+        image: avatar.secure_url || user_cloud?.cloudinary_id,
+        cloudinary_id: avatar.public_id || user_cloud?.cloudinary_id,
       });
 
       console.log("update profile:   ", newUser);

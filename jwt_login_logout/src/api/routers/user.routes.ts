@@ -12,7 +12,7 @@ router.post("/create", userController.postUser);
 
 router.get("/info", cookieMiddleWare, userController.getInfo);
 
-router.put("/edit/:id",upload.single("image"), userController.putUser);
+router.put("/edit",upload.single("image"), userController.putUser);
 
 router.delete("/delete/:id", userController.deleteUser);
 export default router;
