@@ -36,8 +36,7 @@ export const userPugController = {
       let path = req.file;
       const result = await cloudinary.uploader.upload(path?.path);
       console.log(result);
-      let newImg = path?.path.split("/").slice(2).join("/");
-
+      
       const findUser = await accountModel.findOne({ user });
       if (findUser)
         return res.status(401).json({ message: "tai khoan da ton tai!" });

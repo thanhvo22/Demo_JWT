@@ -27,7 +27,11 @@ export const userController = {
 
   postUser: async (req: Request, res: Response) => {
     try {
-      const { user, name, pass } = req.body;
+      let { user, name, pass } = req.body;
+      let path = req.file;
+      const result = await cloudinary.uploader.upload(path?.path);
+      console.log("result:   ",result);
+      
       const findUser = await accountModel.findOne({ user });
       if (findUser)
         return res.status(401).json({ message: "tai khoan da ton tai!" });
@@ -36,14 +40,16 @@ export const userController = {
         user,
         name,
         pass: hashedPass,
+        image: result.secure_url,
+        cloudinary_id: result.public_id,
       });
-      newUser.save();
-      res.status(201).json({
-        user: newUser,
-        message: "created user successfully",
-      });
+      await newUser.save();
 
-      res.render("users/create");
+      console.log("newuser: ", newUser);
+      res.json({
+        message: "create user successfully",
+        user: newUser
+      })
     } catch (error) {
       return res.status(404).json({
         message: error,
