@@ -13,6 +13,12 @@ export const userPugController = {
       users: users,
     });
   },
+
+  getUserID: async(req:Request, res:Response) => {
+    const user = await accountModel.findById(req.params.id);
+    return res.render("users/viewUser", {user});
+  },
+
   getCreateUser: (req: Request, res: Response) => {
     res.render("users/create");
   },
@@ -68,7 +74,7 @@ export const userPugController = {
       console.log("put user: ", id);
       let user_cloud = await accountModel.findById(id);
       if(user_cloud){
-        await cloudinary.uploader.destroy(user_cloud.cloudinary_id);
+        await cloudinary.uploader.destroy(user_cloud?.cloudinary_id);
       }
       let path = req.file;
       let avatar;

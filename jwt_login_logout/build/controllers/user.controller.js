@@ -56,6 +56,17 @@ exports.userPugController = {
             }
         });
     }); },
+    getUserID: function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+        var user;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, account_model_1["default"].findById(req.params.id)];
+                case 1:
+                    user = _a.sent();
+                    return [2 /*return*/, res.render("users/viewUser", { user: user })];
+            }
+        });
+    }); },
     getCreateUser: function (req, res) {
         res.render("users/create");
     },
@@ -88,7 +99,7 @@ exports.userPugController = {
         });
     }); },
     postUser: function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-        var _a, user, name_1, pass, path, result, newImg, findUser, hashedPass, newUser, error_1;
+        var _a, user, name_1, pass, path, result, findUser, hashedPass, newUser, error_1;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
@@ -99,7 +110,6 @@ exports.userPugController = {
                 case 1:
                     result = _b.sent();
                     console.log(result);
-                    newImg = path === null || path === void 0 ? void 0 : path.path.split("/").slice(2).join("/");
                     return [4 /*yield*/, account_model_1["default"].findOne({ user: user })];
                 case 2:
                     findUser = _b.sent();
@@ -138,45 +148,48 @@ exports.userPugController = {
                     console.log("test");
                     _b.label = 1;
                 case 1:
-                    _b.trys.push([1, 8, , 9]);
+                    _b.trys.push([1, 9, , 10]);
                     id = req.signedCookies.cookie_id;
                     console.log("put user: ", id);
                     return [4 /*yield*/, account_model_1["default"].findById(id)];
                 case 2:
                     user_cloud = _b.sent();
-                    return [4 /*yield*/, cloudinary.uploader.destroy(user_cloud.cloudinary_id)];
+                    if (!user_cloud) return [3 /*break*/, 4];
+                    return [4 /*yield*/, cloudinary.uploader.destroy(user_cloud === null || user_cloud === void 0 ? void 0 : user_cloud.cloudinary_id)];
                 case 3:
                     _b.sent();
+                    _b.label = 4;
+                case 4:
                     path = req.file;
                     avatar = void 0;
-                    if (!path) return [3 /*break*/, 5];
+                    if (!path) return [3 /*break*/, 6];
                     return [4 /*yield*/, cloudinary.uploader.upload(path.path)];
-                case 4:
-                    avatar = _b.sent();
-                    _b.label = 5;
                 case 5:
+                    avatar = _b.sent();
+                    _b.label = 6;
+                case 6:
                     _a = req.body, name_2 = _a.name, pass = _a.pass;
                     return [4 /*yield*/, argon2.hash(pass)];
-                case 6:
+                case 7:
                     hashedPass = _b.sent();
                     return [4 /*yield*/, account_model_1["default"].findByIdAndUpdate(id, {
                             name: name_2,
                             pass: hashedPass,
-                            image: avatar.secure_url || user_cloud.cloudinary_id,
-                            cloudinary_id: avatar.public_id || user_cloud.cloudinary_id
+                            image: avatar.secure_url || (user_cloud === null || user_cloud === void 0 ? void 0 : user_cloud.cloudinary_id),
+                            cloudinary_id: avatar.public_id || (user_cloud === null || user_cloud === void 0 ? void 0 : user_cloud.cloudinary_id)
                         })];
-                case 7:
+                case 8:
                     newUser = _b.sent();
                     console.log("update profile:   ", newUser);
                     res.redirect("/user/info");
-                    return [3 /*break*/, 9];
-                case 8:
+                    return [3 /*break*/, 10];
+                case 9:
                     error_2 = _b.sent();
                     res.status(404).json({
                         message: error_2
                     });
-                    return [3 /*break*/, 9];
-                case 9: return [2 /*return*/];
+                    return [3 /*break*/, 10];
+                case 10: return [2 /*return*/];
             }
         });
     }); },

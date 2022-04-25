@@ -15,6 +15,7 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
 var multer = require("multer");
+var rateLimit = require("express-rate-limit");
 var app = express();
 app.use(express.json());
 // app.use(cors());
@@ -42,9 +43,14 @@ mongoose
 })["catch"](function (err) {
     throw err;
 });
+var apiLimiter = rateLimit({
+    windowMs: 60 * 1000,
+    max: 2,
+    message: "Too many connection"
+});
 // console.log(authCookieRouter.path());
 app.use("/auth", auth_cookie_1["default"]);
 app.use("/user", user_pug_route_1["default"]);
 //v1 call post man
-app.use("/api/v1/user", user_routes_1["default"]);
+app.use("/api/v1/user", apiLimiter, user_routes_1["default"]);
 app.use("/api/v1/auth", auth_route_1["default"]);

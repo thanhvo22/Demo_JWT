@@ -5,10 +5,7 @@ block content
     span.mr-3 Users
     a.btn.btn-primary(href="/user/create") New
 
-  .d-flex.align-items-center
-    form.ml-auto(action="/users/search" method="GET" class="d-flex")
-      input(type="text" name="q" class="form-control")
-      button(class="btn btn-primary ml-2") Search
+  
 
   table.table
     tr
@@ -26,4 +23,4 @@ block content
         td=user.user
         
         td
-          a.btn.btn-light(href='/user/info/' + user.id) View
+          a.btn.btn-light(href='/user/' + user.id) View

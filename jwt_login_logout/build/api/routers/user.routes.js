@@ -8,6 +8,7 @@ var router = express();
 router.get("/", cookieSession_middleware_1.cookieMiddleWare, user_controller_1.userController.getUser);
 router.get("/all-user", user_controller_1.userController.getUser);
 router.post("/create", user_controller_1.userController.postUser);
-router.put("/edit/:id", multer_1.upload.single("image"), user_controller_1.userController.putUser);
+router.get("/info", cookieSession_middleware_1.cookieMiddleWare, user_controller_1.userController.getInfo);
+router.put("/edit", multer_1.upload.single("image"), user_controller_1.userController.putUser);
 router["delete"]("/delete/:id", user_controller_1.userController.deleteUser);
 exports["default"] = router;

@@ -57,39 +57,64 @@ exports.userController = {
             }
         });
     }); },
+    getInfo: function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+        var id, user;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    id = req.signedCookies.cookie_id;
+                    return [4 /*yield*/, account_model_1["default"].findById(id)];
+                case 1:
+                    user = _a.sent();
+                    res.json({
+                        user: user
+                    });
+                    return [2 /*return*/];
+            }
+        });
+    }); },
     postUser: function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-        var _a, user, name_1, pass, findUser, hashedPass, newUser, error_1;
+        var _a, user, name_1, pass, path, result, findUser, hashedPass, newUser, error_1;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    _b.trys.push([0, 3, , 4]);
+                    _b.trys.push([0, 5, , 6]);
                     _a = req.body, user = _a.user, name_1 = _a.name, pass = _a.pass;
-                    return [4 /*yield*/, account_model_1["default"].findOne({ user: user })];
+                    path = req.file;
+                    return [4 /*yield*/, cloudinary.uploader.upload(path === null || path === void 0 ? void 0 : path.path)];
                 case 1:
+                    result = _b.sent();
+                    console.log("result:   ", result);
+                    return [4 /*yield*/, account_model_1["default"].findOne({ user: user })];
+                case 2:
                     findUser = _b.sent();
                     if (findUser)
                         return [2 /*return*/, res.status(401).json({ message: "tai khoan da ton tai!" })];
                     return [4 /*yield*/, argon2.hash(pass)];
-                case 2:
+                case 3:
                     hashedPass = _b.sent();
                     newUser = new account_model_1["default"]({
                         user: user,
                         name: name_1,
-                        pass: hashedPass
+                        pass: hashedPass,
+                        image: result.secure_url,
+                        cloudinary_id: result.public_id
                     });
-                    newUser.save();
-                    res.status(201).json({
-                        user: newUser,
-                        message: "created user successfully"
+                    return [4 /*yield*/, newUser.save()];
+                case 4:
+                    _b.sent();
+                    console.log("newuser: ", newUser);
+                    res.json({
+                        message: "create user successfully",
+                        user: newUser
                     });
-                    res.render("users/create");
-                    return [3 /*break*/, 4];
-                case 3:
+                    return [3 /*break*/, 6];
+                case 5:
                     error_1 = _b.sent();
                     return [2 /*return*/, res.status(404).json({
                             message: error_1
                         })];
-                case 4: return [2 /*return*/];
+                case 6: return [2 /*return*/];
             }
         });
     }); },
@@ -98,51 +123,55 @@ exports.userController = {
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    console.log("test");
+                    console.log("test_pustUser");
                     _b.label = 1;
                 case 1:
-                    _b.trys.push([1, 8, , 9]);
-                    id = req.params.id;
+                    _b.trys.push([1, 9, , 10]);
+                    id = req.signedCookies.cookie_id;
                     console.log("put user: ", id);
                     return [4 /*yield*/, account_model_1["default"].findById(id)];
                 case 2:
                     user_cloud = _b.sent();
+                    if (!user_cloud) return [3 /*break*/, 4];
                     return [4 /*yield*/, cloudinary.uploader.destroy(user_cloud.cloudinary_id)];
                 case 3:
                     _b.sent();
-                    path = req.file;
-                    avatar = void 0;
-                    if (!path) return [3 /*break*/, 5];
-                    return [4 /*yield*/, cloudinary.uploader.upload(path.path)];
+                    _b.label = 4;
                 case 4:
-                    avatar = _b.sent();
-                    _b.label = 5;
+                    path = req.file;
+                    console.log("path:   ", path);
+                    avatar = void 0;
+                    if (!path) return [3 /*break*/, 6];
+                    return [4 /*yield*/, cloudinary.uploader.upload(path.path)];
                 case 5:
+                    avatar = _b.sent();
+                    _b.label = 6;
+                case 6:
+                    console.log("avatar:   ", avatar);
                     _a = req.body, name_2 = _a.name, pass = _a.pass;
                     return [4 /*yield*/, argon2.hash(pass)];
-                case 6:
+                case 7:
                     hashedPass = _b.sent();
                     return [4 /*yield*/, account_model_1["default"].findByIdAndUpdate(id, {
                             name: name_2,
-                            pass: hashedPass,
-                            image: avatar.secure_url || user_cloud.cloudinary_id,
-                            cloudinary_id: avatar.public_id || user_cloud.cloudinary_id
+                            pass: hashedPass || (user_cloud === null || user_cloud === void 0 ? void 0 : user_cloud.pass),
+                            image: avatar.secure_url || (user_cloud === null || user_cloud === void 0 ? void 0 : user_cloud.image),
+                            cloudinary_id: avatar.public_id || (user_cloud === null || user_cloud === void 0 ? void 0 : user_cloud.cloudinary_id)
                         })];
-                case 7:
+                case 8:
                     newUser = _b.sent();
-                    console.log("update profile:   ", newUser);
                     res.json({
                         message: "update profile successfull",
                         user: newUser
                     });
-                    return [3 /*break*/, 9];
-                case 8:
+                    return [3 /*break*/, 10];
+                case 9:
                     error_2 = _b.sent();
                     res.status(404).json({
                         message: error_2
                     });
-                    return [3 /*break*/, 9];
-                case 9: return [2 /*return*/];
+                    return [3 /*break*/, 10];
+                case 10: return [2 /*return*/];
             }
         });
     }); },
