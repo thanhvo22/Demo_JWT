@@ -41,7 +41,7 @@ const postLogin = async (req: Request, res: Response) => {
     res.cookie("cookie_id", userName.id, {
       signed: true,
     });
-    res.redirect("/user")
+    res.redirect("/user");
   } catch (error) {
     console.log(error);
 
@@ -50,7 +50,6 @@ const postLogin = async (req: Request, res: Response) => {
       message: "error",
     });
   }
-  
 };
 
 const postRegister = async (req: Request, res: Response) => {

@@ -52,28 +52,30 @@ export const userController = {
   },
 
   putUser: async (req: Request, res: Response) => {
-    console.log("test");
+    console.log("test_pustUser");
     try {
-      const id = req.params.id;
+      const id = req.signedCookies.cookie_id;
       console.log("put user: ", id);
-      let user_cloud: any = await accountModel.findById(id);
-
-      await cloudinary.uploader.destroy(user_cloud.cloudinary_id);
+      let user_cloud = await accountModel.findById(id);
+      
+      if(user_cloud){
+        await cloudinary.uploader.destroy(user_cloud.cloudinary_id);
+      }
       let path = req.file;
+      console.log("path:   ", path)
       let avatar;
       if (path) {
         avatar = await cloudinary.uploader.upload(path.path);
       }
+      console.log("avatar:   ", avatar)
       const { name, pass } = req.body;
       const hashedPass = await argon2.hash(pass);
       const newUser = await accountModel.findByIdAndUpdate(id, {
         name,
-        pass: hashedPass,
-        image: avatar.secure_url || user_cloud.cloudinary_id,
-        cloudinary_id: avatar.public_id || user_cloud.cloudinary_id,
+        pass: hashedPass || user_cloud?.pass,
+        image: avatar.secure_url || user_cloud?.image,
+        cloudinary_id: avatar.public_id || user_cloud?.cloudinary_id,
       });
-
-      console.log("update profile:   ", newUser);
 
       res.json({
         message: "update profile successfull",
