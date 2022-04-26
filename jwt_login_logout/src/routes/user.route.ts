@@ -4,14 +4,14 @@ const router:Express = express();
 import { Request, Response, NextFunction } from "express";
 import { userPugController } from "../controllers/user.controller";
 import { cookieMiddleWare } from "../middleware/cookieSession.middleware";
-
+const {authPage} = require("../middleware/role.middleware");
 import {upload} from '../utils/multer';
 // const multer = require("multer");
 // var upload = multer({ dest: "./src/public/uploads/" });
 
-router.get("/", cookieMiddleWare, userPugController.getUser);
+router.get("/", cookieMiddleWare ,userPugController.getUser);
 
-router.get("/create", userPugController.getCreateUser);
+router.get("/create", authPage('Admin'),userPugController.getCreateUser);
 
 router.get("/info", userPugController.getInfo);
 

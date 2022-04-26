@@ -5,5 +5,6 @@ export interface IAccount extends Document {
   name?: string;
   pass: string;
   image?: string;
+  roles?:string;
   cloudinary_id: string;
 }

@@ -16,6 +16,11 @@ var accountSchema = new mongoose_1.Schema({
     image: {
         type: String
     },
+    roles: {
+        type: String,
+        "enum": ["User", "Sharers"],
+        "default": "User"
+    },
     cloudinary_id: {
         type: String
     }

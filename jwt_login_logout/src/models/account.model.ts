@@ -20,6 +20,11 @@ const accountSchema: Schema = new Schema(
     image: {
       type: String,
     },
+    roles: {
+      type: String,
+      enum: ["User", "Sharers"],
+      default: "User"
+    },
     cloudinary_id: {
       type: String,
     }

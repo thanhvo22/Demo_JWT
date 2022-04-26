@@ -1,0 +1,16 @@
+extends ../layouts/common
+
+block content
+  h1
+    span.mr-3 Products
+    a.btn.btn-primary(href="/product/create") New
+    each product in products
+        .card(style='width: 16rem;')
+            img.card-img-top(src=product.image alt='Card image cap')
+            .card-body
+                h5.card-title=product.name
+                p.card-text=product.price 
+                a.btn.btn-primary(href='#') Add to Cart
+
+
+  

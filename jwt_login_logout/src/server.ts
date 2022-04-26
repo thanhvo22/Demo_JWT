@@ -6,7 +6,8 @@ dotenv.config();
 import authRouter from "./api/routers/auth.route";
 import authCookieRouter from "./routes/auth.cookie";
 import userRouter from "./api/routers/user.routes";
-import userPugRouter from "./routes/user.pug.route";
+import userPugRouter from "./routes/user.route";
+import productRouter from "./routes/product.routes";
 
 const express = require("express");
 const mongoose = require("mongoose");
@@ -57,7 +58,9 @@ const apiLimiter = rateLimit({
 // console.log(authCookieRouter.path());
 app.use("/auth", authCookieRouter);
 app.use("/user", userPugRouter);
+app.use("/product", productRouter);
 
 //v1 call post man
 app.use("/api/v1/user",apiLimiter ,userRouter);
 app.use("/api/v1/auth", authRouter);
+// /cms -admin

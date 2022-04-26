@@ -8,7 +8,8 @@ dotenv.config();
 var auth_route_1 = require("./api/routers/auth.route");
 var auth_cookie_1 = require("./routes/auth.cookie");
 var user_routes_1 = require("./api/routers/user.routes");
-var user_pug_route_1 = require("./routes/user.pug.route");
+var user_route_1 = require("./routes/user.route");
+var product_routes_1 = require("./routes/product.routes");
 var express = require("express");
 var mongoose = require("mongoose");
 var path = require("path");
@@ -50,7 +51,9 @@ var apiLimiter = rateLimit({
 });
 // console.log(authCookieRouter.path());
 app.use("/auth", auth_cookie_1["default"]);
-app.use("/user", user_pug_route_1["default"]);
+app.use("/user", user_route_1["default"]);
+app.use("/product", product_routes_1["default"]);
 //v1 call post man
 app.use("/api/v1/user", apiLimiter, user_routes_1["default"]);
 app.use("/api/v1/auth", auth_route_1["default"]);
+// /cms -admin
