@@ -49,7 +49,7 @@ exports.ProductController = {
                 case 0: return [4 /*yield*/, product_model_1["default"].find()];
                 case 1:
                     products = _a.sent();
-                    return [2 /*return*/, res.render("products/index")];
+                    return [2 /*return*/, res.render("products/index", { products: products })];
             }
         });
     }); },
@@ -67,7 +67,8 @@ exports.ProductController = {
         });
     }); },
     getCreateProduct: function (req, res) {
-        return res.render("/products/create");
+        console.log("get create product");
+        return res.render("products/create");
     },
     postProduct: function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
         var _a, name_1, price, path, result, newProduct, error_1;

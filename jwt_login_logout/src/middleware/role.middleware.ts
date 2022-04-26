@@ -16,7 +16,7 @@ const authPage =  (permission: any) => {
     console.log("user:   ",user)
     console.log(permission.includes(user.roles));
     if (!permission.includes(user.roles)) {
-      return res.render("products/index");
+      return res.redirect("/product");
     }
     next();
   };

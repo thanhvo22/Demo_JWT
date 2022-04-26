@@ -15,8 +15,9 @@ export const ProductController = {
     const product = await productModel.findById(id);
     return res.json(product);
   },
-  getCreateProduct: (req: Request, res: Response) => {
-    return res.render("products/create");
+  getCreateProduct: (req: any, res: Response) => {
+    console.log("get create product");
+    res.render("products/create.pug");
   },
   postProduct: async (req: Request, res: Response) => {
     console.log("create Product!");

@@ -81,11 +81,11 @@ export const userPugController = {
       if (path) {
         avatar = await cloudinary.uploader.upload(path.path);
       }
-      const { name, pass } = req.body;
-      const hashedPass = await argon2.hash(pass);
+      const { name} = req.body;
+      // const hashedPass = await argon2.hash(pass);
       const newUser = await accountModel.findByIdAndUpdate(id, {
         name,
-        pass: hashedPass,
+        
         image: avatar.secure_url || user_cloud?.cloudinary_id,
         cloudinary_id: avatar.public_id || user_cloud?.cloudinary_id,
       });
