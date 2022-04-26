@@ -36,10 +36,7 @@ export const ProductController = {
         cloudinary_id: result.public_id,
       });
       await newProduct.save();
-      return res.json({
-        message: "create product successfully",
-        product: newProduct,
-      });
+      return res.redirect("/product");
     } catch (error) {
       res.json({
         message: error,
