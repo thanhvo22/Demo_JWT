@@ -68,7 +68,7 @@ exports.userPugController = {
         });
     }); },
     getCreateUser: function (req, res) {
-        res.render("users/create");
+        res.render("admin/products/create");
     },
     getInfo: function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
         var id, user;
@@ -141,55 +141,51 @@ exports.userPugController = {
         });
     }); },
     putUser: function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-        var id, user_cloud, path, avatar, _a, name_2, pass, hashedPass, newUser, error_2;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
+        var id, user_cloud, path, avatar, name_2, newUser, error_2;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
                 case 0:
                     console.log("test");
-                    _b.label = 1;
+                    _a.label = 1;
                 case 1:
-                    _b.trys.push([1, 9, , 10]);
+                    _a.trys.push([1, 8, , 9]);
                     id = req.signedCookies.cookie_id;
                     console.log("put user: ", id);
                     return [4 /*yield*/, account_model_1["default"].findById(id)];
                 case 2:
-                    user_cloud = _b.sent();
+                    user_cloud = _a.sent();
                     if (!user_cloud) return [3 /*break*/, 4];
                     return [4 /*yield*/, cloudinary.uploader.destroy(user_cloud === null || user_cloud === void 0 ? void 0 : user_cloud.cloudinary_id)];
                 case 3:
-                    _b.sent();
-                    _b.label = 4;
+                    _a.sent();
+                    _a.label = 4;
                 case 4:
                     path = req.file;
                     avatar = void 0;
                     if (!path) return [3 /*break*/, 6];
                     return [4 /*yield*/, cloudinary.uploader.upload(path.path)];
                 case 5:
-                    avatar = _b.sent();
-                    _b.label = 6;
+                    avatar = _a.sent();
+                    _a.label = 6;
                 case 6:
-                    _a = req.body, name_2 = _a.name, pass = _a.pass;
-                    return [4 /*yield*/, argon2.hash(pass)];
-                case 7:
-                    hashedPass = _b.sent();
+                    name_2 = req.body.name;
                     return [4 /*yield*/, account_model_1["default"].findByIdAndUpdate(id, {
                             name: name_2,
-                            pass: hashedPass,
                             image: avatar.secure_url || (user_cloud === null || user_cloud === void 0 ? void 0 : user_cloud.cloudinary_id),
                             cloudinary_id: avatar.public_id || (user_cloud === null || user_cloud === void 0 ? void 0 : user_cloud.cloudinary_id)
                         })];
-                case 8:
-                    newUser = _b.sent();
+                case 7:
+                    newUser = _a.sent();
                     console.log("update profile:   ", newUser);
                     res.redirect("/user/info");
-                    return [3 /*break*/, 10];
-                case 9:
-                    error_2 = _b.sent();
+                    return [3 /*break*/, 9];
+                case 8:
+                    error_2 = _a.sent();
                     res.status(404).json({
                         message: error_2
                     });
-                    return [3 /*break*/, 10];
-                case 10: return [2 /*return*/];
+                    return [3 /*break*/, 9];
+                case 9: return [2 /*return*/];
             }
         });
     }); },

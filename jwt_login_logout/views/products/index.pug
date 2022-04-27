@@ -6,12 +6,14 @@ block content
     a.btn.btn-primary(href="http://localhost:7000/product/create") Add 
 
     each product in products
-        .card(style='width: 16rem;')
-            img.card-img-top(src=product.image alt='Card image cap')
-            .card-body
-                h5.card-title=product.name
-                p.card-text=product.price 
-                a.btn.btn-primary(href='/cart/add/' + product.id) Add to Cart
+      .row
+        .row-sm-6 
+          .card(style='width: 16rem;')
+              img.card-img-top(src=product.image alt='Card image cap')
+              .card-body
+                  h5.card-title=product.name
+                  p.card-text=product.price 
+                  a.btn.btn-primary(href='/cart/add/' + product.id) Add to Cart
 
 
   

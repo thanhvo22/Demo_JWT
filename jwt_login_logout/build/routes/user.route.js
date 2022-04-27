@@ -11,7 +11,7 @@ var multer_1 = require("../utils/multer");
 router.get("/", cookieSession_middleware_1.cookieMiddleWare, user_controller_1.userPugController.getUser);
 router.get("/create", authPage('Admin'), user_controller_1.userPugController.getCreateUser);
 router.get("/info", user_controller_1.userPugController.getInfo);
-router.post("/create", multer_1.upload.single("image"), user_controller_1.userPugController.postUser);
+router.post("/create", authPage('Admin'), multer_1.upload.single("image"), user_controller_1.userPugController.postUser);
 router.get("/info/edit", user_controller_1.userPugController.getEdit);
 router.post("/info/edit", multer_1.upload.single("image"), user_controller_1.userPugController.putUser);
 router["delete"]("/delete/:id", user_controller_1.userPugController.deleteUser);

@@ -68,7 +68,7 @@ exports.ProductController = {
     }); },
     getCreateProduct: function (req, res) {
         console.log("get create product");
-        return res.render("products/create");
+        res.render("products/create.pug");
     },
     postProduct: function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
         var _a, name_1, price, path, result, newProduct, error_1;
@@ -95,10 +95,7 @@ exports.ProductController = {
                     return [4 /*yield*/, newProduct.save()];
                 case 3:
                     _b.sent();
-                    return [2 /*return*/, res.json({
-                            message: "create product successfully",
-                            product: newProduct
-                        })];
+                    return [2 /*return*/, res.redirect("/product")];
                 case 4:
                     error_1 = _b.sent();
                     res.json({

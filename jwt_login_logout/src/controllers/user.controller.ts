@@ -20,7 +20,7 @@ export const userPugController = {
   },
 
   getCreateUser: (req: Request, res: Response) => {
-    res.render("users/create");
+    res.render("admin/products/create");
   },
 
   getInfo: async (req: Request, res: Response) => {

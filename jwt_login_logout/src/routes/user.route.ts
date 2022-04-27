@@ -8,19 +8,16 @@ const {authPage} = require("../middleware/role.middleware");
 import {upload} from '../utils/multer';
 // const multer = require("multer");
 // var upload = multer({ dest: "./src/public/uploads/" });
-
-router.get("/", cookieMiddleWare ,userPugController.getUser);
-
-router.get("/create", authPage('Admin'),userPugController.getCreateUser);
-
+// USER
+router.get("/", cookieMiddleWare, authPage("Admin") ,userPugController.getUser);
 router.get("/info", userPugController.getInfo);
-
-router.post("/create", upload.single("image"), userPugController.postUser);
-
 router.get("/info/edit", userPugController.getEdit);
-
 router.post("/info/edit", upload.single("image"), userPugController.putUser);
 
+
+// Admin
+router.get("/create", authPage('Admin'),userPugController.getCreateUser);
+router.post("/create", authPage('Admin'),upload.single("image"), userPugController.postUser);
 router.delete("/delete/:id", userPugController.deleteUser);
 
 export default router;
