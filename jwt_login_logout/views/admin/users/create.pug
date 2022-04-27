@@ -1,0 +1,27 @@
+extends ../layouts/common.pug
+
+block content
+  h1 Create user
+
+  if errors
+    each error in errors
+      .alert.alert-danger= error
+
+  form(action="/user/create", method="POST", enctype="multipart/form-data")
+    .form-group
+      label(for="name") Name
+      input#name.form-control(name="name", type="text", value=values ? values.name : "")
+
+    .form-group
+      label(for="user") User
+      input#user.form-control(name="user", type="text", value=values ? values.user : "")
+
+    .form-group
+      label(for="pass") Pass
+      input#pass.form-control(name="pass", type="password", value=values ? values.pass : "")
+
+    .form-group
+      label(for="image") Avatar
+      input#avatar.form-control-file(name="image", type="file")
+
+    button.btn.btn-primary Create

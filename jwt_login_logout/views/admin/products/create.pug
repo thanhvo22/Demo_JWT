@@ -1,0 +1,24 @@
+extends ../layouts/common.pug
+
+block content
+  h1 Add Product
+
+  if errors
+    each error in errors
+      .alert.alert-danger= error
+
+  form(action="/product/create", method="POST", enctype="multipart/form-data")
+    .form-group
+      label(for="name") Name Product
+      input#name.form-control(name="name", type="text", value=values ? values.name : "")
+
+    .form-group
+      label(for="price") Price 
+      input#price.form-control(name="price", type="text", value=values ? values.price : "")
+
+
+    .form-group
+      label(for="image") Image Product
+      input#image.form-control-file(name="image", type="file")
+
+    button.btn.btn-primary Create Product

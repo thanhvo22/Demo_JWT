@@ -1,0 +1,20 @@
+extends ../layouts/common.pug
+
+block content
+  h1 Profile 
+
+  if errors
+    each error in errors
+      .alert.alert-danger= error
+
+  form(action="http://localhost:7000/user/info/edit", method="POST", enctype="multipart/form-data")
+    .form-group
+      label(for="name") Name
+      input#name.form-control(name="name", type="text", value=values ? values.name :user.name)
+
+    
+    .form-group
+      label(for="image") Avatar
+      input#avatar.form-control-file(name="image", type="file")
+
+    button.btn.btn-primary Update
