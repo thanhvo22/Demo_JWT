@@ -41,7 +41,11 @@ const postLogin = async (req: Request, res: Response) => {
     res.cookie("cookie_id", userName.id, {
       signed: true,
     });
-    res.redirect("/user");
+    //check roles
+    if(userName.roles =="Admin"){
+      return res.redirect("/user");
+    }
+    res.redirect("/product");
   } catch (error) {
     console.log(error);
 
