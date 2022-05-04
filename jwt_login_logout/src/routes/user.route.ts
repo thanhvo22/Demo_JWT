@@ -9,7 +9,7 @@ import {upload} from '../utils/multer';
 // const multer = require("multer");
 // var upload = multer({ dest: "./src/public/uploads/" });
 // USER
-router.get("/", cookieMiddleWare, authPage("Admin") ,userPugController.getUser);
+router.get("/", authPage("Admin") ,userPugController.getUser);
 router.get("/info", userPugController.getInfo);
 router.get("/info/edit", userPugController.getEdit);
 router.post("/info/edit", upload.single("image"), userPugController.putUser);

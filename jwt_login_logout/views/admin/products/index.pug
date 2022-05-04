@@ -1,0 +1,24 @@
+extends ../layouts/common
+
+block content
+  h1
+    span.mr-3 All Users
+    a.btn.btn-primary(href="/product/create") New
+
+  table.table
+    tr
+      th Image
+      th Name Product
+      th Price
+      th Actions
+      
+    
+    each product in products
+      tr
+        td
+          img(src=product.image, width="50")
+        td=product.name 
+        td=product.price
+        
+        td
+          a.btn.btn-light(href='/product/' + product.id) View

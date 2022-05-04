@@ -81,7 +81,11 @@ var postLogin = function (req, res) { return __awaiter(void 0, void 0, void 0, f
                 res.cookie("cookie_id", userName.id, {
                     signed: true
                 });
-                res.redirect("/user");
+                //check roles
+                if (userName.roles == "Admin") {
+                    return [2 /*return*/, res.redirect("/user")];
+                }
+                res.redirect("/product");
                 return [3 /*break*/, 5];
             case 4:
                 error_1 = _b.sent();

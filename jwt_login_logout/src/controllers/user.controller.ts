@@ -9,7 +9,7 @@ const argon2 = require("argon2");
 export const userPugController = {
   getUser: async (req: Request, res: Response) => {
     const users = await accountModel.find();
-    return res.render("users/index", {
+    return res.render("admin/users/index", {
       users: users,
     });
   },

@@ -50,7 +50,7 @@ exports.userPugController = {
                 case 0: return [4 /*yield*/, account_model_1["default"].find()];
                 case 1:
                     users = _a.sent();
-                    return [2 /*return*/, res.render("users/index", {
+                    return [2 /*return*/, res.render("admin/users/index", {
                             users: users
                         })];
             }
