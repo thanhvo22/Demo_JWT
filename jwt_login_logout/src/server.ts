@@ -7,6 +7,7 @@ import userRouter from "./api/routers/user.routes";
 import userPugRouter from "./routes/user.route";
 import productRouter from "./routes/product.routes";
 import cartRouter from "./routes/cart.route";
+import adminRouter from "./routes/admin.routes";
 import { sessionMiddleware } from "./middleware/session.middleware";
 import { cookieMiddleWare } from "./middleware/cookieSession.middleware";
 
@@ -70,6 +71,7 @@ app.use("/auth", authCookieRouter);
 app.use("/user", cookieMiddleWare, userPugRouter);
 app.use("/product", productRouter);
 app.use("/cart", cartRouter);
+app.use("/cms", adminRouter);
 
 //v1 call post man
 app.use("/api/v1/user", apiLimiter, userRouter);

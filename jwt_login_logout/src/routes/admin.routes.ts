@@ -3,11 +3,10 @@ import { Express } from "express";
 const router:Express = express();
 import { Request, Response, NextFunction } from "express";
 import { userPugController } from "../controllers/user.controller";
-import { cookieMiddleWare } from "../middleware/cookieSession.middleware";
 const {authPage} = require("../middleware/role.middleware");
 import {upload} from '../utils/multer';
 
-router.get("/", cookieMiddleWare, authPage("Admin") ,userPugController.getUser);
+router.get("/",authPage("Admin") ,userPugController.getUser);
 router.get("/info", userPugController.getInfo);
 router.get("/info/edit", userPugController.getEdit);
 router.post("/info/edit", upload.single("image"), userPugController.putUser);

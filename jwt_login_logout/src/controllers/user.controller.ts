@@ -16,11 +16,11 @@ export const userPugController = {
 
   getUserID: async(req:Request, res:Response) => {
     const user = await accountModel.findById(req.params.id);
-    return res.render("users/viewUser", {user});
+    return res.render("admin/users/viewUser", {user});
   },
 
   getCreateUser: (req: Request, res: Response) => {
-    res.render("admin/products/create");
+    res.render("admin/users/create");
   },
 
   getInfo: async (req: Request, res: Response) => {

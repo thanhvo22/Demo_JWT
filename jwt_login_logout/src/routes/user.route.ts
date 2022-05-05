@@ -3,7 +3,7 @@ import { Express } from "express";
 const router:Express = express();
 import { Request, Response, NextFunction } from "express";
 import { userPugController } from "../controllers/user.controller";
-import { cookieMiddleWare } from "../middleware/cookieSession.middleware";
+
 const {authPage} = require("../middleware/role.middleware");
 import {upload} from '../utils/multer';
 // const multer = require("multer");
@@ -17,7 +17,8 @@ router.post("/info/edit", upload.single("image"), userPugController.putUser);
 
 // Admin
 router.get("/create", authPage('Admin'),userPugController.getCreateUser);
+router.get("/:id",authPage('Admin'),userPugController.getUserID);
 router.post("/create", authPage('Admin'),upload.single("image"), userPugController.postUser);
-router.delete("/delete/:id", userPugController.deleteUser);
+router.delete("/delete/:id",authPage('Admin'), userPugController.deleteUser);
 
 export default router;
