@@ -21,14 +21,15 @@ export const cartController = {
     if (!sessionId) {
       return res.redirect("/product");
     }
-    const cartUser = await cartModel.find({ user_id: user_id });
-    // console.log("user_Cart", cartUser);
+    const cartUser = await cartModel.findOne({ user_id: user_id });
+    console.log("user_Cart", cartUser);
 
     const test1_product = cartModel
       .find({ "product.product_id": product_Id })
       .lean(); // seem good
-    console.log("something here", test1_product);
-    if (!cartUser[0]) {
+    // console.log("something here", test1_product);
+
+    if (!cartUser) {
       let quantity: number = 1;
       const price_id = await productModel.findById({ _id: product_Id });
       let price_prd = price_id?.price || 0;
@@ -46,16 +47,30 @@ export const cartController = {
       return res.redirect("/product");
     }
 
-
+    let itemIndex: any = cartUser.product?.findIndex(
+      (p) => p.product_id == product_Id
+    );
+    console.log("item index:   ", itemIndex);
+    const price_id = await productModel.findById({ _id: product_Id });
+    let price_prd = price_id?.price || 0;
+    if (itemIndex == -1) {
+      let item = cartUser.product;
+      item?.push({
+        product_id: product_Id,
+        quantity: 1
+      })
+    }
+    await cartUser.save();
     if (!test1_product) {
       let newProduct = {
         product_id: product_Id,
         quantity: 1,
       };
+      console.log("new product", newProduct);
 
       let newCart = await cartModel.findOneAndUpdate(
-        { _id: user_id },
-        { $push: { product: newProduct } },
+        { user_id: user_id },
+        { $push: { product: newProduct } }
       );
       console.log("new cart _2", newCart);
       return res.redirect("/product");
