@@ -1,9 +1,10 @@
-import * as express from "express";
-import { Request, Response } from "express";
-import productModel from "../models/product.model";
 import * as dotenv from "dotenv";
 dotenv.config();
+import * as express from "express";
+import { Request, Response } from "express";
 const cloudinary = require("../utils/cloudinary");
+import productModel from "../models/product.model";
+const session = require("express-session");
 
 export const ProductController = {
   getProducts: async (req: Request, res: Response) => {

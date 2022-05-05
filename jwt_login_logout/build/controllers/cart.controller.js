@@ -56,7 +56,7 @@ exports.cartController = {
         });
     }); },
     postAddToCart: function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-        var product_Id, sessionId, user_id, cartUser, quantity, price_id, price_prd, total, newCart;
+        var product_Id, sessionId, user_id, cartUser, test1_product, quantity, price_id, price_prd, total, newCart, newProduct, newCart;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -69,16 +69,17 @@ exports.cartController = {
                     return [4 /*yield*/, cart_model_1["default"].find({ user_id: user_id })];
                 case 1:
                     cartUser = _a.sent();
-                    console.log("user_Cart", cartUser);
+                    test1_product = cart_model_1["default"]
+                        .find({ "product.product_id": product_Id })
+                        .lean();
+                    console.log("something here", test1_product);
                     if (!!cartUser[0]) return [3 /*break*/, 4];
                     quantity = 1;
                     return [4 /*yield*/, product_model_1["default"].findById({ _id: product_Id })];
                 case 2:
                     price_id = _a.sent();
-                    console.log("price _ id: ", price_id === null || price_id === void 0 ? void 0 : price_id.price);
                     price_prd = (price_id === null || price_id === void 0 ? void 0 : price_id.price) || 0;
                     total = quantity * price_prd;
-                    console.log("total:     ", total);
                     return [4 /*yield*/, cart_model_1["default"].create({
                             user_id: user_id,
                             product: [
@@ -91,22 +92,19 @@ exports.cartController = {
                         })];
                 case 3:
                     newCart = _a.sent();
-                    console.log("new cart_product :   ", newCart.product);
-                    res.redirect("/product");
-                    _a.label = 4;
+                    return [2 /*return*/, res.redirect("/product")];
                 case 4:
-                    // const newProduct = await cartModel.create({
-                    //   user_id,
-                    //   product: [
-                    //     {
-                    //       product_Id,
-                    //       quantity: 1,
-                    //     },
-                    //   ],
-                    //   total: 1,
-                    // });
-                    console.log("new cart :   ");
-                    //cartModel.set("cart." + productId, count + 1);
+                    if (!!test1_product) return [3 /*break*/, 6];
+                    newProduct = {
+                        id: product_Id,
+                        quantity: 1
+                    };
+                    return [4 /*yield*/, cart_model_1["default"].updateOne({ _id: user_id }, { $addToSet: { product: newProduct } })];
+                case 5:
+                    newCart = _a.sent();
+                    console.log("new cart _2", newCart);
+                    return [2 /*return*/, res.redirect("/product")];
+                case 6:
                     res.redirect("/product");
                     return [2 /*return*/];
             }

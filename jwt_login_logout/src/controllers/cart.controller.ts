@@ -22,8 +22,12 @@ export const cartController = {
       return res.redirect("/product");
     }
     const cartUser = await cartModel.find({ user_id: user_id });
-    console.log("user_Cart", cartUser);
+    // console.log("user_Cart", cartUser);
 
+    const test1_product = cartModel
+      .find({ "product.product_id": product_Id })
+      .lean(); // seem good
+    console.log("something here", test1_product);
     if (!cartUser[0]) {
       let quantity: number = 1;
       const price_id = await productModel.findById({ _id: product_Id });
@@ -39,13 +43,23 @@ export const cartController = {
         ],
         total: total,
       });
-      res.redirect("/product");
+      return res.redirect("/product");
     }
 
-    // const test_product = cartUser.find({product: {$elemMatch:{product_id: product_Id}}})
-    
-    // console.log("new cart :   ", cart_Final);
-    //cartModel.set("cart." + productId, count + 1);
+
+    if (!test1_product) {
+      let newProduct = {
+        product_id: product_Id,
+        quantity: 1,
+      };
+
+      let newCart = await cartModel.findOneAndUpdate(
+        { _id: user_id },
+        { $push: { product: newProduct } },
+      );
+      console.log("new cart _2", newCart);
+      return res.redirect("/product");
+    }
 
     res.redirect("/product");
   },
