@@ -5,6 +5,6 @@ export type Tproduct = {
 }
 export interface ICart extends Document{
     user_id: string,
-    product?: [Tproduct],
+    products?: [Tproduct],
     total?:number,
 }

@@ -33,7 +33,7 @@ export const cartController = {
       let total = quantity * price_prd;
       await cartModel.create({
         user_id,
-        product: [
+        products: [
           {
             product_id: product_Id,
             quantity: quantity,
@@ -45,7 +45,7 @@ export const cartController = {
     }
 
     // check duplicate id
-    let product: any = cartUser.product?.find(
+    let product: any = cartUser.products?.find(
       (p: any) => p.product_id == product_Id
     );
 
@@ -57,7 +57,7 @@ export const cartController = {
         { _id: cartUser._id },
         {
           $push: {
-            product: {
+            products: {
               product_id: product_Id,
               quantity: 1,
             },
@@ -72,11 +72,11 @@ export const cartController = {
       // let quantity = temp[itemIndex].quantity;
       // quantity++;
       await cartModel.findOneAndUpdate(
-        { user_id: user_id, "product.product_id": product_Id },
-        { $inc: { "product.$.quantity": 1 } }
+        { user_id: user_id, "products.product_id": product_Id },
+        { $inc: { "products.$.quantity": 1 } }
       );
     }
-    const price = cartUser.product.reduce(
+    const price = cartUser.products.reduce(
       (init: number, item: any) => (init += item.product_id.price)  
     ,0);
     console.log(price);
