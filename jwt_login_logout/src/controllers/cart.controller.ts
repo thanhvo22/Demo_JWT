@@ -21,25 +21,22 @@ export const cartController = {
     if (!sessionId) {
       return res.redirect("/product");
     }
-    const cartUser = await cartModel.findOne({ user_id: user_id });
-    // console.log("user_Cart", cartUser);
+    const cartUser: any = await cartModel
+      .findOne({ user_id: user_id })
+      .populate("product.product_id");
 
-    const test1_product = cartModel
-      .find({ "product.product_id": product_Id })
-      .lean(); // seem good
-    // console.log("something here", test1_product);
-
+    // cart not exist
     if (!cartUser) {
       let quantity: number = 1;
       const price_id = await productModel.findById({ _id: product_Id });
       let price_prd = price_id?.price || 0;
       let total = quantity * price_prd;
-      let newCart = await cartModel.create({
+      await cartModel.create({
         user_id,
         product: [
           {
-            product_Id,
-            quantity,
+            product_id: product_Id,
+            quantity: quantity,
           },
         ],
         total: total,
@@ -47,29 +44,45 @@ export const cartController = {
       return res.redirect("/product");
     }
 
-    let itemIndex: any = cartUser.product?.findIndex(
-      (p) => p.product_id == product_Id
+    // check duplicate id
+    let product: any = cartUser.product?.find(
+      (p: any) => p.product_id == product_Id
     );
-    console.log("item index:   ", itemIndex);
-    
-    let item = cartUser.product;
-    if (itemIndex == -1) {
-      item?.push({
-        product_id: product_Id,
-        quantity: 1
-      })
-    await cartUser.save();
 
-    }else{
+    console.log("cartUser.product", cartUser.product);
+
+    if (!product) {
+      console.log("cart doesnt have product");
+      await cartModel.updateOne(
+        { _id: cartUser._id },
+        {
+          $push: {
+            product: {
+              product_id: product_Id,
+              quantity: 1,
+            },
+          },
+        },
+        { new: true }
+      );
+      console.log("product", product);
+    } else {
+      console.log("cart have product");
       // const temp: any = cartUser.product;
       // let quantity = temp[itemIndex].quantity;
       // quantity++;
       await cartModel.findOneAndUpdate(
-        {user_id: user_id, 'product.product_id': product_Id},
-        {$inc: {"product.$.quantity": 1}});
+        { user_id: user_id, "product.product_id": product_Id },
+        { $inc: { "product.$.quantity": 1 } }
+      );
     }
-    
+    const price = cartUser.product.reduce(
+      (init: number, item: any) => (init += item.product_id.price)  
+    ,0);
+    console.log(price);
+
     res.redirect("/product");
+    // res.json({cartUser})
   },
 
   getCartForUser: async (req: Request, res: Response) => {
