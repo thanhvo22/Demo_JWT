@@ -89,8 +89,14 @@ export const cartController = {
       .populate("products.product_id");
     return res.render("users/carts", {cartUser});
   },
-  putCart: (req: Request, res: Response) => {
-    res.send("edit cart");
+  putCart: async (req: Request, res: Response) => {
+    const cart_id = req.params.id;
+    const status = "pending";
+    console.log("put cart", status);
+    await cartModel.findByIdAndUpdate({_id: cart_id}, {
+      status
+    })
+    res.redirect("/product");
   },
 
   deleteCart: (req: Request, res: Response) => {

@@ -11,6 +11,10 @@ const getLogin = (req: Request, res: Response) => {
   // res.render("src/views/auth/login.pug");
   res.render("auth/login.pug");
 };
+const getRegister = (req: Request, res: Response) => {
+  // res.render("src/views/auth/login.pug");
+  res.render("auth/register.pug");
+};
 const getUser = (req: Request, res: Response) => {
   res.render("users/index");
 };
@@ -81,19 +85,8 @@ const postRegister = async (req: Request, res: Response) => {
     });
 
     await newUser.save();
-    const accessToken = jwt.sign(
-      { userId: newUser._id },
-      process.env.ACCESS_TOKEN_SECRET,
-      {
-        expiresIn: "1m",
-      }
-    );
 
-    res.json({
-      success: true,
-      message: " user created successfully ",
-      accessToken,
-    });
+    res.render("auth/login")
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -113,4 +106,5 @@ export default {
   postRegister,
   deleteLogin,
   getUser,
+  getRegister
 };
