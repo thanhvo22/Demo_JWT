@@ -9,7 +9,7 @@ export const cartMiddleware = async function (
   const user_id = req.signedCookies.cookie_id;
   const cartUser: any = await cartModel.findOne({ user_id: user_id });
   console.log(cartUser);
-  if (cartUser.status =='pending') {
+  if (cartUser) {
     next();
     return cartUser;
   }

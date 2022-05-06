@@ -10,13 +10,14 @@ block content
       th product 
       th quantity 
       th total
-      th status
+      
       th Actions
     tr
       td 
       td
-      td=cartUser.total
-      td=cartUser.status
+      td=cartUser.total 
+      
       
       td
-        a.btn.btn-light(href='/cart/edit/'+cartUser.id) Buy
+        a.btn.btn-success(href='/cart/edit/'+cartUser.id) Buy
+        a.btn.btn-danger(href='/cart/delete/'+cartUser.id) Delete

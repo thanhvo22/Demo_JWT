@@ -37,7 +37,6 @@ export const cartController = {
       });
       return res.redirect("/product");
     }
-
     // check duplicate id
     let product: any = cartUser.products?.filter(
       (p: any) =>
@@ -65,18 +64,15 @@ export const cartController = {
         { $inc: { "products.$.quantity": 1 } }
       );
     }
-    const price = cartUser.products.reduce((init: number, item: any) => {
-        
-        let total = init + (item.product_id.price * item.quantity)
-        console.log("total", total);
+    let cartFinal:any = await cartModel.findOne({ user_id: user_id }).populate("products.product_id", "product_id price");
+    // console.log("cart User:  ", cartFinal);
+    const price = cartFinal.products.reduce((init: number, item: any) => {
+        let total =  init  + (item.product_id.price * item.quantity)
         return total;
       }
-    ,cartUser.total);
-    console.log(price);
+    ,0);
     await cartModel.findOneAndUpdate({ user_id: user_id }, { total: price });
-
     res.redirect("/product");
-    // res.json({cartUser})
   },
 
   getCartForUser: async (req: Request, res: Response) => {
@@ -84,7 +80,8 @@ export const cartController = {
     const cartUser: any = await cartModel
       .findOne({ user_id: user_id })
       .populate("products.product_id");
-    return res.render("users/carts", { cartUser });
+    // return res.render("users/carts", { cartUser });
+    res.json(cartUser)
   },
   putCart: async (req: Request, res: Response) => {
     const cart_id = req.params.id;
@@ -99,7 +96,9 @@ export const cartController = {
     res.redirect("/product");
   },
 
-  deleteCart: (req: Request, res: Response) => {
-    res.send("delete cart");
+  deleteCart: async (req: Request, res: Response) => {
+    const id = req.params.id;
+    await cartModel.findByIdAndDelete(id);
+    res.redirect("/product");
   },
 };
