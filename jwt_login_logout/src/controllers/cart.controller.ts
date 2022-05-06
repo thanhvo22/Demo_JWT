@@ -3,15 +3,11 @@ import { Request, Response } from "express";
 import cartModel from "../models/cart.model";
 import productModel from "../models/product.model";
 import { ICart } from "../interface/cart.interface";
-var session = require("express-session");
 
 export const cartController = {
   getCart: async (req: Request, res: Response) => {
     const cart = await cartModel.find();
-
-    res.json({
-      cart,
-    });
+    res.json({cart});
   },
 
   postAddToCart: async (req: Request, res: Response) => {
@@ -23,9 +19,9 @@ export const cartController = {
     }
     const cartUser: any = await cartModel
       .findOne({ user_id: user_id })
-      .populate("products.product_id", 'product_id price');
+      .populate("products.product_id", "product_id price");
     if (!cartUser) {
-      let quantity: number = 1;
+      let quantity = 1;
       const price_id = await productModel.findById({ _id: product_Id });
       let price_prd = price_id?.price || 0;
       let total = quantity * price_prd;
@@ -44,11 +40,12 @@ export const cartController = {
 
     // check duplicate id
     let product: any = cartUser.products?.filter(
-      (p: any) => JSON.stringify(p.product_id._id) === JSON.stringify(product_Id)
+      (p: any) =>
+        JSON.stringify(p.product_id._id) === JSON.stringify(product_Id)
     );
-    
+
     if (product.length === 0) {
-      console.log("cart doesnt have product");
+      console.log("cart doesn't have product");
       await cartModel.updateOne(
         { _id: cartUser._id },
         {
@@ -63,21 +60,21 @@ export const cartController = {
       );
     } else {
       console.log("cart have product");
-      
       await cartModel.findOneAndUpdate(
         { user_id: user_id, "products.product_id": product_Id },
-        { $inc: { "products.$.quantity": 1 }}
+        { $inc: { "products.$.quantity": 1 } }
       );
     }
-    const price = cartUser.products.reduce((init: number, item: any) => 
-      (init + item.product_id.price*item.quantity)  
-    ,0);
+    const price = cartUser.products.reduce((init: number, item: any) => {
+        
+        let total = init + (item.product_id.price * item.quantity)
+        console.log("total", total);
+        return total;
+      }
+    ,cartUser.total);
     console.log(price);
-    await cartModel.findOneAndUpdate(
-      { user_id: user_id },
-      { total: price}
-    );
-    
+    await cartModel.findOneAndUpdate({ user_id: user_id }, { total: price });
+
     res.redirect("/product");
     // res.json({cartUser})
   },
@@ -87,15 +84,18 @@ export const cartController = {
     const cartUser: any = await cartModel
       .findOne({ user_id: user_id })
       .populate("products.product_id");
-    return res.render("users/carts", {cartUser});
+    return res.render("users/carts", { cartUser });
   },
   putCart: async (req: Request, res: Response) => {
     const cart_id = req.params.id;
     const status = "pending";
     console.log("put cart", status);
-    await cartModel.findByIdAndUpdate({_id: cart_id}, {
-      status
-    })
+    await cartModel.findByIdAndUpdate(
+      { _id: cart_id },
+      {
+        status,
+      }
+    );
     res.redirect("/product");
   },
 
