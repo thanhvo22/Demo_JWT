@@ -23,9 +23,7 @@ export const cartController = {
     }
     const cartUser: any = await cartModel
       .findOne({ user_id: user_id })
-      .populate("product.product_id");
-
-    // cart not exist
+      .populate("products.product_id", 'product_id price');
     if (!cartUser) {
       let quantity: number = 1;
       const price_id = await productModel.findById({ _id: product_Id });
@@ -36,22 +34,20 @@ export const cartController = {
         products: [
           {
             product_id: product_Id,
-            quantity: quantity,
+            quantity,
           },
         ],
-        total: total,
+        total,
       });
       return res.redirect("/product");
     }
 
     // check duplicate id
-    let product: any = cartUser.products?.find(
-      (p: any) => p.product_id == product_Id
+    let product: any = cartUser.products?.filter(
+      (p: any) => JSON.stringify(p.product_id._id) === JSON.stringify(product_Id)
     );
-
-    console.log("cartUser.product", cartUser.product);
-
-    if (!product) {
+    
+    if (product.length === 0) {
       console.log("cart doesnt have product");
       await cartModel.updateOne(
         { _id: cartUser._id },
@@ -65,28 +61,33 @@ export const cartController = {
         },
         { new: true }
       );
-      console.log("product", product);
     } else {
       console.log("cart have product");
-      // const temp: any = cartUser.product;
-      // let quantity = temp[itemIndex].quantity;
-      // quantity++;
+      
       await cartModel.findOneAndUpdate(
         { user_id: user_id, "products.product_id": product_Id },
-        { $inc: { "products.$.quantity": 1 } }
+        { $inc: { "products.$.quantity": 1 }}
       );
     }
-    const price = cartUser.products.reduce(
-      (init: number, item: any) => (init += item.product_id.price)  
+    const price = cartUser.products.reduce((init: number, item: any) => 
+      (init + item.product_id.price*item.quantity)  
     ,0);
     console.log(price);
-
+    await cartModel.findOneAndUpdate(
+      { user_id: user_id },
+      { total: price}
+    );
+    
     res.redirect("/product");
     // res.json({cartUser})
   },
 
   getCartForUser: async (req: Request, res: Response) => {
     const user_id = req.signedCookies.cookie_id;
+    const cartUser: any = await cartModel
+      .findOne({ user_id: user_id })
+      .populate("products.product_id");
+    return res.render("users/carts", {cartUser});
   },
   putCart: (req: Request, res: Response) => {
     res.send("edit cart");
