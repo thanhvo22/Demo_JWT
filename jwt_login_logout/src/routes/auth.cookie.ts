@@ -7,6 +7,7 @@ const router = express();
 
 // USER
 router.get("/login", authCookieCTL.getLogin);
+router.get("/register", authCookieCTL.getRegister)
 router.post("/login", authCookieCTL.postLogin);
 router.post("/register", authCookieCTL.postRegister);
 router.get("/logout", authCookieCTL.deleteLogin);

@@ -1,0 +1,19 @@
+extends ../layouts/common.pug
+
+block content
+  h1 Register
+
+  if errors
+    each error in errors
+      .alert.alert-danger= error
+
+  form(method="POST" action="/auth/register" )
+    .form-group
+      label(for="user") USER
+      input#user.form-control(name="user", type="text", value=values ? values.user : "")
+
+    .form-group
+      label(for="pass") PASS
+      input#pass.form-control(name="pass", type="password", value=values ? values.pass : "")
+
+    button.btn.btn-primary Register

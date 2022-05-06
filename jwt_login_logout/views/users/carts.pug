@@ -4,18 +4,19 @@ block content
   h1
     span.mr-3 Cart
   
-  div=cartUser.products
+  div=cartUser.id
   table.table
     tr
       th product 
       th quantity 
       th total
+      th status
       th Actions
-    each cart in cartUser   
-      tr
-        td 
-        td=cart.products?.product_id.name
-        td=cart.total
-        
-        td
-          a.btn.btn-light(href='/user/info/edit') Edit
+    tr
+      td 
+      td
+      td=cartUser.total
+      td=cartUser.status
+      
+      td
+        a.btn.btn-light(href='/cart/edit/'+cartUser.id) Buy

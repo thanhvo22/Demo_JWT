@@ -22,6 +22,11 @@ const cartSchema: Schema = new Schema(
     total: {
       type: Number,
     },
+    status: {
+      type: String,
+      enum: ["pending", "accept", "reject", ""],
+      default: "",
+    },
   },
   { timestamps: true }
 );

@@ -1,0 +1,27 @@
+extends ../layouts/common
+
+block content
+  h1
+    span.mr-3 Carts
+    a.btn.btn-success(href="#") List Accept
+    a.btn.btn-danger(href="#") List Reject
+
+  
+  div=carts.id
+  table.table
+    tr
+      th product 
+      th quantity 
+      th total
+      th Actions
+      th Status
+    each cart in carts
+        tr
+        td 
+        td
+        td=cart.total
+        td=cart.status
+        
+        td
+            a.btn.btn-success(href='/cms/carts/edit/'+cart.id) Accecpt
+            a.btn.btn-danger(href='/cms/carts/edit/'+cart.id) Reject

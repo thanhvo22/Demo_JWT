@@ -7,4 +7,5 @@ export interface ICart extends Document{
     user_id: string,
     products?: [Tproduct],
     total?:number,
+    status?:string
 }

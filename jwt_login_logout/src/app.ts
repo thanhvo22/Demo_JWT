@@ -14,6 +14,7 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const rateLimit = require("express-rate-limit");
 var session = require("express-session");
+const {authPage} = require("./middleware/role.middleware")
 // const MongoStore = require("connect-mongo")(session);
 const app = express();
 
@@ -54,7 +55,7 @@ app.use("/auth", authCookieRouter);
 app.use("/user", cookieMiddleWare, userPugRouter);
 app.use("/product", productRouter);
 app.use("/cart", cartRouter);
-app.use("/cms", adminRouter);
+app.use("/cms", authPage('Admin'),adminRouter);
 
 //v1 call post man
 app.use("/api/v1/user", apiLimiter, userRouter);
